@@ -19,10 +19,7 @@ class DocumentServiceImpl : DocumentService {
     lateinit var courseService: CourseService
 
     override fun storeDocument(file: MultipartFile, dto: DocumentDTO) {
-        val doc = Document()
-        doc.file = file
-        doc.name = dto.name
-        doc.exam = dto.exam
+        val doc = Document(file = file, name = dto.name, exam = dto.exam)
         documentRepository.saveAndFlush(doc)
     }
 
