@@ -4,19 +4,13 @@ import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.document.model.Document
 import ch.wisv.choice.document.model.DocumentDTO
 import ch.wisv.choice.exam.service.ExamService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
 @Service
-class DocumentServiceImpl : DocumentService {
-
-    @Autowired
-    lateinit var documentRepository: DocumentRepository
-    @Autowired
-    lateinit var examService: ExamService
-    @Autowired
-    lateinit var courseService: CourseService
+class DocumentServiceImpl(val documentRepository: DocumentRepository,
+                          val examService: ExamService,
+                          val courseService: CourseService) : DocumentService {
 
     override fun storeDocument(file: MultipartFile, dto: DocumentDTO) {
         val doc = Document(file = file, name = dto.name, exam = dto.exam)
