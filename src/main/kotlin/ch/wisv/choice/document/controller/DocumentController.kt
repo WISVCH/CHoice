@@ -27,8 +27,8 @@ class DocumentController
             = documentService.getDocumentsMetadataByExam(examId)
 
     @GetMapping("/course/{code}")
-    fun getDocumentsMetadataByCourseCode(@PathVariable coursecode: String): Collection<Document>
-            = documentService.getDocumentsMetadataByCourseCode(coursecode)
+    fun getDocumentsMetadataByCourseCode(@PathVariable code: String): Collection<Document>
+            = documentService.getDocumentsMetadataByCourseCode(code)
 
     @GetMapping("/{documentId}")
     fun getDocumentById(@PathVariable examId: Long, @PathVariable documentId: Long): MultipartFile?
