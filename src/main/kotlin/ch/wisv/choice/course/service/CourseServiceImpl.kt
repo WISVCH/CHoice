@@ -1,14 +1,10 @@
 package ch.wisv.choice.course.service
 
 import ch.wisv.choice.course.model.Course
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class CourseServiceImpl
-
-    @Autowired
-    constructor(@Autowired val courseRepository: CourseRepository) : CourseService {
+class CourseServiceImpl(val courseRepository: CourseRepository) : CourseService {
 
     override fun readAllCourses(): Collection<Course>
             = courseRepository.findAll()

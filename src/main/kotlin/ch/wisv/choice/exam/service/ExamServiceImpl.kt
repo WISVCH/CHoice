@@ -1,14 +1,10 @@
 package ch.wisv.choice.exam.service
 
 import ch.wisv.choice.exam.model.Exam
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ExamServiceImpl
-
-    @Autowired
-    constructor(@Autowired val examRepository: ExamRepository) : ExamService {
+class ExamServiceImpl(val examRepository: ExamRepository) : ExamService {
 
     override fun createExam(exam: Exam): Exam
             = examRepository.saveAndFlush(exam)
