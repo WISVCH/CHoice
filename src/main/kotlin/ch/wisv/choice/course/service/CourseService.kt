@@ -8,9 +8,9 @@ interface CourseService {
 
     fun createCourse(course: Course): Course
 
-    fun getCourseByCourseCode(courseCode: String): Course
+    fun getCourseByCourseCode(courseCode: String): Course?
 
-    fun getCoursePredecessorByCourseCode(courseCode: String): Course
+    fun getCoursePredecessorByCourseCode(courseCode: String): Course?
 
     fun deleteCourse(courseCode: String)
 

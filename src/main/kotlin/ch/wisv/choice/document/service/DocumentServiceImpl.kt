@@ -32,9 +32,12 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
 
     override fun getDocumentsMetadataByCourseCode(courseCode: String): Collection<Document> {
         val course = courseService.getCourseByCourseCode(courseCode)
-        val documents = documentRepository.findAllByExam_Course(course)
-        documents.forEach { it.file = null }
-        return documents
+        if (course != null) {
+            val documents = documentRepository.findAllByExam_Course(course)
+            documents.forEach { it.file = null }
+            return documents
+        }
+        return emptyList()
     }
 
     override fun getDocumentById(id: Long): MultipartFile?
@@ -51,6 +54,6 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
 
     override fun deleteDocumentsByCourse(courseCode: String) {
         val course = courseService.getCourseByCourseCode(courseCode)
-        documentRepository.deleteAllByExam_Course(course)
+        course?.let { documentRepository.deleteAllByExam_Course(it) }
     }
 }
