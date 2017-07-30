@@ -13,7 +13,7 @@ class CourseController
     constructor(@Autowired val courseService: CourseService) {
 
     @PostMapping
-    fun createCourse(@RequestBody course: Course)
+    fun createCourse(@RequestBody course: Course): Course
             = courseService.createCourse(course)
 
     @GetMapping
@@ -21,14 +21,14 @@ class CourseController
             = courseService.readAllCourses()
 
     @GetMapping("/{code}")
-    fun getCourseByCode(@PathVariable code: String): Course
+    fun getCourseByCode(@PathVariable code: String): Course?
             = courseService.getCourseByCourseCode(code)
 
     @GetMapping("/{code}/predecessor")
-    fun getCoursePredecessorByCode(@PathVariable code: String): Course
+    fun getCoursePredecessorByCode(@PathVariable code: String): Course?
             = courseService.getCoursePredecessorByCourseCode(code)
 
     @DeleteMapping("/{code}")
-    fun deleteCourse(@PathVariable code: String)
+    fun deleteCourse(@PathVariable code: String): Unit
             = courseService.deleteCourse(code)
 }

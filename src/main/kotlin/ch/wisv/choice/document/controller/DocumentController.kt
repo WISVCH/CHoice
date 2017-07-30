@@ -15,7 +15,7 @@ class DocumentController
     constructor(@Autowired val documentService: DocumentService) {
 
     @PostMapping
-    fun createDocument(@RequestParam("file") file: MultipartFile, @RequestBody dto: DocumentDTO)
+    fun createDocument(@RequestParam("file") file: MultipartFile, @RequestParam("dto") dto: DocumentDTO)
             = documentService.storeDocument(file, dto)
 
     @GetMapping

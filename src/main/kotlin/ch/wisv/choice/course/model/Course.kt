@@ -1,6 +1,5 @@
 package ch.wisv.choice.course.model
 
-
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.validation.constraints.NotNull

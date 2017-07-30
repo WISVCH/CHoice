@@ -9,13 +9,18 @@ class CourseServiceImpl(val courseRepository: CourseRepository) : CourseService 
     override fun readAllCourses(): Collection<Course>
             = courseRepository.findAll()
 
-    override fun createCourse(course: Course): Course
-            = courseRepository.saveAndFlush(course)
+    override fun createCourse(course: Course): Course {
+        val predecessor = course.predecessor
+        if (predecessor != null && getCourseByCourseCode(predecessor) == null) {
+            throw Exception("Predecessor Course doesn't exist!")
+        }
+        return courseRepository.saveAndFlush(course)
+    }
 
-    override fun getCourseByCourseCode(courseCode: String): Course
+    override fun getCourseByCourseCode(courseCode: String): Course?
             = courseRepository.findOne(courseCode)
 
-    override fun getCoursePredecessorByCourseCode(courseCode: String): Course {
+    override fun getCoursePredecessorByCourseCode(courseCode: String): Course? {
         val (_, _, predecessor) = courseRepository.findOne(courseCode)
         return courseRepository.findOne(predecessor)
     }
