@@ -11,22 +11,25 @@ import org.springframework.web.multipart.MultipartFile
 class DocumentServiceImpl(val documentRepository: DocumentRepository,
                           val examService: ExamService,
                           val courseService: CourseService) : DocumentService {
-
     override fun storeDocument(file: MultipartFile, dto: DocumentDTO) {
-        val doc = Document(file = file, name = dto.name, exam = dto.exam)
-        documentRepository.saveAndFlush(doc)
+        val document = Document(bytes = file.bytes, name = dto.name, exam = dto.exam)
+        documentRepository.saveAndFlush(document)
+    }
+
+    override fun storeDocument(document: Document) {
+        documentRepository.saveAndFlush(document)
     }
 
     override fun getDocumentsMetadata(): Collection<Document> {
         val documents = documentRepository.findAll()
-        documents.forEach { it.file = null }
+        documents.forEach { it.bytes = kotlin.ByteArray(0) }
         return documents
     }
 
     override fun getDocumentsMetadataByExam(examId: Long): Collection<Document> {
         val exam = examService.getExamById(examId)
         val documents = documentRepository.findAllByExam(exam)
-        documents.forEach { it.file = null }
+        documents.forEach { it.bytes = kotlin.ByteArray(0) }
         return documents
     }
 
@@ -34,14 +37,14 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
         val course = courseService.getCourseByCourseCode(courseCode)
         if (course != null) {
             val documents = documentRepository.findAllByExam_Course(course)
-            documents.forEach { it.file = null }
+            documents.forEach { it.bytes = kotlin.ByteArray(0) }
             return documents
         }
         return emptyList()
     }
 
-    override fun getDocumentById(id: Long): MultipartFile?
-            = documentRepository.findOne(id).file
+    override fun getDocumentBytesById(id: Long): ByteArray
+            = documentRepository.findOne(id).bytes
 
 
     override fun deleteDocument(documentId: Long)

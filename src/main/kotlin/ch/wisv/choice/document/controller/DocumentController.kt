@@ -31,8 +31,8 @@ class DocumentController
             = documentService.getDocumentsMetadataByCourseCode(code)
 
     @GetMapping("/{documentId}")
-    fun getDocumentById(@PathVariable examId: Long, @PathVariable documentId: Long): MultipartFile?
-            = documentService.getDocumentById(documentId)
+    fun getDocumentById(@PathVariable examId: Long, @PathVariable documentId: Long): ByteArray
+            = documentService.getDocumentBytesById(documentId)
 
     @DeleteMapping("/{documentId}")
     fun deleteDocument(@PathVariable documentId: Long)
