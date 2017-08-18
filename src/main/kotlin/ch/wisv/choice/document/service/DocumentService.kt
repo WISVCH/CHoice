@@ -9,13 +9,15 @@ interface DocumentService {
 
     fun storeDocument(file: MultipartFile, dto: DocumentDTO)
 
+    fun storeDocument(document: Document)
+
     fun getDocumentsMetadata(): Collection<Document>
 
     fun getDocumentsMetadataByExam(examId: Long): Collection<Document>
 
     fun getDocumentsMetadataByCourseCode(courseCode: String): Collection<Document>
 
-    fun getDocumentById(id: Long): MultipartFile?
+    fun getDocumentBytesById(id: Long): ByteArray
 
     fun deleteDocument(documentId: Long)
 
