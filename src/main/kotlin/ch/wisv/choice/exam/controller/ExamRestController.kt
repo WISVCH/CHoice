@@ -6,15 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/exam")
-class ExamController
+@RequestMapping("/api/v1/exam")
+class ExamRestController
 
     @Autowired
     constructor(@Autowired val examService: ExamService) {
-
-    @PostMapping
-    fun createExam(@RequestBody exam: Exam)
-            = examService.createExam(exam)
 
     @GetMapping
     fun getExams(): Collection<Exam>
@@ -27,12 +23,4 @@ class ExamController
     @GetMapping("/{examId}")
     fun getExamById(@PathVariable examId: Long): Exam
             = examService.getExamById(examId)
-
-    @DeleteMapping
-    fun deleteExam(@RequestBody exam: Exam)
-            = examService.deleteExam(exam)
-
-    @DeleteMapping("/{code}")
-    fun deleteExamsByCourseCode(@PathVariable code: String)
-            = examService.deleteExamsByCourse(code)
 }

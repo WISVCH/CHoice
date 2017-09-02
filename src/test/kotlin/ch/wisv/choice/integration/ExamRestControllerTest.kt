@@ -12,7 +12,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDate
 
-class ExamControllerTest : IntegrationTest() {
+class ExamRestControllerTest : IntegrationTest() {
 
     @Autowired
     lateinit var examService : ExamService
@@ -39,8 +39,7 @@ class ExamControllerTest : IntegrationTest() {
             get("/exam").
         then().
             statusCode(HttpStatus.SC_OK).
-            body("name", hasItem(exam.name)).
-            body("course.code", hasItem(exam.course.code))
+            body("name", hasItem(exam.name))
         //@formatter:on
     }
 

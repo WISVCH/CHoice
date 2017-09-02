@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository
 @Repository
 interface DocumentRepository : JpaRepository<Document, Long> {
 
-    fun findAllByExam(exam: Exam): Collection<Document>
-
-    fun findAllByExam_Course(course: Course): Collection<Document>
-
-    fun deleteAllByExam(exam: Exam): Nothing
-
-    fun deleteAllByExam_Course(course: Course): Nothing
+//    fun findAllByExam(exam: Exam): Collection<Document>
+//
+//    fun findAllByExam_Course(course: Course): Collection<Document>
+//
+//    fun deleteAllByExam(exam: Exam): Nothing
+//
+//    fun deleteAllByExam_Course(course: Course): Nothing
 }

@@ -1,11 +1,15 @@
 package ch.wisv.choice.document.model
 
-import ch.wisv.choice.exam.model.Exam
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.Lob
 
 @Entity
 data class Document(
         @GeneratedValue @Id val id: Long? = null,
+
         @Lob var bytes: ByteArray,
-        var name: String,
-        @ManyToOne(targetEntity = Exam::class) var exam: Exam)
+
+        var name: String = ""
+)

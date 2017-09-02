@@ -41,11 +41,11 @@ class ApplicationTest {
             examService.createExam(exam2)
 
             val file = File("src/test/resources/TI1300 - Tentamen.pdf")
-            val document = Document(null, file.readBytes(), "Tentamen", exam1)
+            val document = Document(null, file.readBytes(), "Tentamen")
             documentService.storeDocument(document)
 
             val file2 = File("src/test/resources/TI1300 - Antwoorden.pdf")
-            val document2 = Document(null, file2.readBytes(), "Antwoorden", exam1)
+            val document2 = Document(null, file2.readBytes(), "Antwoorden")
             documentService.storeDocument(document2)
         }
     }

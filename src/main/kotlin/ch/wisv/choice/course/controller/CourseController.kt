@@ -12,10 +12,6 @@ class CourseController
     @Autowired
     constructor(@Autowired val courseService: CourseService) {
 
-    @PostMapping
-    fun createCourse(@RequestBody course: Course): Course
-            = courseService.createCourse(course)
-
     @GetMapping
     fun readAllCourses(): Collection<Course>
             = courseService.readAllCourses()
@@ -27,8 +23,4 @@ class CourseController
     @GetMapping("/{code}/predecessor")
     fun getCoursePredecessorByCode(@PathVariable code: String): Course?
             = courseService.getCoursePredecessorByCourseCode(code)
-
-    @DeleteMapping("/{code}")
-    fun deleteCourse(@PathVariable code: String): Unit
-            = courseService.deleteCourse(code)
 }

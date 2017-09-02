@@ -7,21 +7,21 @@ import org.springframework.web.multipart.MultipartFile
 
 interface DocumentService {
 
-    fun storeDocument(file: MultipartFile, dto: DocumentDTO)
+    fun storeDocument(file: MultipartFile, dto: DocumentDTO): Document
 
-    fun storeDocument(document: Document)
+    fun storeDocument(document: Document): Document
 
     fun getDocumentsMetadata(): Collection<Document>
 
-    fun getDocumentsMetadataByExam(examId: Long): Collection<Document>
-
-    fun getDocumentsMetadataByCourseCode(courseCode: String): Collection<Document>
+//    fun getDocumentsMetadataByExam(examId: Long): Collection<Document>
+//
+//    fun getDocumentsMetadataByCourseCode(courseCode: String): Collection<Document>
 
     fun getDocumentBytesById(id: Long): ByteArray
 
-    fun deleteDocument(documentId: Long)
-
-    fun deleteDocumentsByExam(examId: Long)
-
-    fun deleteDocumentsByCourse(courseCode: String)
+//    fun deleteDocument(documentId: Long)
+//
+//    fun deleteDocumentsByExam(examId: Long)
+//
+//    fun deleteDocumentsByCourse(courseCode: String)
 }
