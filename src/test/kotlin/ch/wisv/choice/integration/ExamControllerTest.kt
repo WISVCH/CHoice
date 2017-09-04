@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
 
 @ActiveProfiles("test")
-class ExamRestControllerTest : IntegrationTest() {
+class ExamControllerTest : IntegrationTest() {
 
     @Autowired
     lateinit var examService : ExamService
@@ -39,7 +39,6 @@ class ExamRestControllerTest : IntegrationTest() {
         documentService.storeDocument(document)
 
         val exam = Exam(null, course, LocalDate.now(), "Examen", document, true)
-        exam.document = document
         examService.createExam(exam)
 
         //@formatter:off
@@ -48,7 +47,7 @@ class ExamRestControllerTest : IntegrationTest() {
             get("/api/v1/exam").
         then().
             statusCode(HttpStatus.SC_OK).
-            body("name", hasItem(exam.name))
+            body("content.name", hasItem(exam.name))
         // @formatter:on
     }
 

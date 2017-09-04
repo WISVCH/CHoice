@@ -1,5 +1,14 @@
 package ch.wisv.choice.security
 
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+
 /**
  * Copyright (c) 2016  W.I.S.V. 'Christiaan Huygens'
  * <p>
@@ -16,5 +25,24 @@ package ch.wisv.choice.security
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class SecurityConfiguration {
+@Configuration
+@EnableWebSecurity
+@Profile("test")
+class SecurityConfiguration : WebSecurityConfigurerAdapter() {
+
+
+    override fun configure(auth: AuthenticationManagerBuilder) {
+        auth.inMemoryAuthentication().withUser("user").password("password").roles("USER")
+    }
+
+    override fun configure(http: HttpSecurity) {
+        http.httpBasic().and().csrf().disable()
+                .authorizeRequests()
+                    .anyRequest().permitAll()
+    }
+
+    @Bean
+    override fun authenticationManagerBean(): AuthenticationManager {
+        return super.authenticationManagerBean()
+    }
 }

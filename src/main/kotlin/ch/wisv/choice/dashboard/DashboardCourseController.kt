@@ -6,7 +6,6 @@ import ch.wisv.choice.util.CHoiceException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
@@ -37,7 +36,7 @@ class DashboardCourseController
 
     @GetMapping("/")
     fun index(model: Model): String {
-        model.addAttribute("courses", courseService.readAllCourses())
+        model.addAttribute("courses", courseService.getAllCourses())
 
         return "dashboard/course/index"
     }
@@ -48,7 +47,7 @@ class DashboardCourseController
             model.addAttribute("course", Course())
         }
 
-        model.addAttribute("courses", courseService.readAllCourses());
+        model.addAttribute("courses", courseService.getAllCourses());
 
         return "dashboard/course/create"
     }
