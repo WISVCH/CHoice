@@ -29,7 +29,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 class DashboardController
 
     constructor(@Autowired val examService: ExamService) {
-    
+
+    /**
+     * Dashboard index
+     */
     @GetMapping("/")
     fun index(model: Model): String {
         return "dashboard/index"

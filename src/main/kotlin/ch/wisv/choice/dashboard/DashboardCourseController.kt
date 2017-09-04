@@ -35,6 +35,9 @@ class DashboardCourseController
 
     constructor(@Autowired val courseService: CourseService) {
 
+    /**
+     * Dashboard course index.
+     */
     @GetMapping("/")
     fun index(model: Model): String {
         model.addAttribute("courses", courseService.getAllCourses())
@@ -42,6 +45,9 @@ class DashboardCourseController
         return "dashboard/course/index"
     }
 
+    /**
+     * Dashboard course create.
+     */
     @GetMapping("/create/")
     fun create(model: Model): String {
         if (!model.containsAttribute("course")) {
@@ -53,6 +59,9 @@ class DashboardCourseController
         return "dashboard/course/create"
     }
 
+    /**
+     * POST course create.
+     */
     @PostMapping("/create/")
     fun create(redirect: RedirectAttributes, @ModelAttribute model: Course): String {
         return try {

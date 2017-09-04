@@ -36,6 +36,9 @@ class DashboardExamController
 
     constructor(@Autowired val examService: ExamService, @Autowired val courseService: CourseService, @Autowired val documentService: DocumentService) {
 
+    /**
+     * Dashboard exam index.
+     */
     @GetMapping("/")
     fun index(model: Model): String {
         model.addAttribute("exams", examService.getExams())
@@ -43,6 +46,9 @@ class DashboardExamController
         return "dashboard/exam/index"
     }
 
+    /**
+     * Dashboard exam create.
+     */
     @GetMapping("/create/")
     fun create(model: Model): String {
         if (!model.containsAttribute("exam")) {
@@ -54,6 +60,9 @@ class DashboardExamController
         return "dashboard/exam/create"
     }
 
+    /**
+     * POST exam create.
+     */
     @PostMapping("/create/")
     fun create(redirect: RedirectAttributes, @ModelAttribute model: Exam, @RequestParam("file") file: MultipartFile): String {
         return try {
