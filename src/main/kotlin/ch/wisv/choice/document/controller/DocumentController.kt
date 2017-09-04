@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2016  W.I.S.V. 'Christiaan Huygens'
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package ch.wisv.choice.document.controller
 
 import ch.wisv.choice.document.model.Document
@@ -13,25 +30,34 @@ import org.springframework.web.multipart.MultipartFile
 @CrossOrigin
 class DocumentController
 
-    @Autowired
     constructor(@Autowired val documentService: DocumentService) {
 
+    /**
+     * Create a new document from MultipartFile and DocumentDTO
+     *
+     * @param file: MultipartFile
+     * @param dto: DocumentDTO
+     *
+     * return Document
+     */
     @PostMapping
-    fun createDocument(@RequestParam("file") file: MultipartFile, @RequestParam("dto") dto: DocumentDTO)
+    fun createDocument(@RequestParam("file") file: MultipartFile, @RequestParam("dto") dto: DocumentDTO): Document
             = documentService.storeDocument(file, dto)
 
+    /**
+     * Get list of Document metadata
+     *
+     * @return Collection<Document>
+     */
     @GetMapping
     fun getDocumentsMetadata(): Collection<Document>
             = documentService.getDocumentsMetadata()
 
-//    @GetMapping("/exam/{examId}")
-//    fun getDocumentsMetadataByExam(@PathVariable examId: Long): Collection<Document>
-//            = documentService.getDocumentsMetadataByExam(examId)
-//
-//    @GetMapping("/course/{code}")
-//    fun getDocumentsMetadataByCourseCode(@PathVariable code: String): Collection<Document>
-//            = documentService.getDocumentsMetadataByCourseCode(code)
-
+    /**
+     * Show document ByteArray as application/pdf
+     *
+     * @return ByteArray
+     */
     @ResponseBody
     @GetMapping("/{documentId}", produces = arrayOf(MediaType.APPLICATION_PDF_VALUE))
     fun getDocumentById(@PathVariable documentId: Long): ByteArray
