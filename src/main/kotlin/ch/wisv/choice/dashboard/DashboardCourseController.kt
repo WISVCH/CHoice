@@ -2,25 +2,38 @@ package ch.wisv.choice.dashboard
 
 import ch.wisv.choice.course.model.Course
 import ch.wisv.choice.course.service.CourseService
-import ch.wisv.choice.document.model.DocumentDTO
-import ch.wisv.choice.document.service.DocumentService
-import ch.wisv.choice.exam.model.Exam
-import ch.wisv.choice.exam.service.ExamService
 import ch.wisv.choice.util.CHoiceException
-import org.apache.tomcat.util.http.fileupload.FileUploadBase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
+/**
+ * Copyright (c) 2016  W.I.S.V. 'Christiaan Huygens'
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 @Controller
 @RequestMapping("/dashboard/courses")
 class DashboardCourseController
-@Autowired
-constructor(@Autowired val courseService: CourseService) {
+
+    constructor(@Autowired val courseService: CourseService) {
 
     @GetMapping("/")
     fun index(model: Model): String {
@@ -41,21 +54,16 @@ constructor(@Autowired val courseService: CourseService) {
     }
 
     @PostMapping("/create/")
-    fun create(redirect: RedirectAttributes, @ModelAttribute @Validated model: Course): String {
+    fun create(redirect: RedirectAttributes, @ModelAttribute model: Course): String {
         return try {
             courseService.createCourse(model)
 
             "redirect:/dashboard/courses/"
-        } catch (e:  Exception) {
-            when (e) {
-                is CHoiceException -> {
-                    redirect.addFlashAttribute("error", e.message)
-                    redirect.addFlashAttribute("course", model)
+        } catch (e: CHoiceException) {
+            redirect.addFlashAttribute("error", e.message)
+            redirect.addFlashAttribute("course", model)
 
-                    "redirect:/dashboard/courses/create/"
-                }
-                else -> throw e
-            }
+            "redirect:/dashboard/courses/create/"
         }
     }
 }
