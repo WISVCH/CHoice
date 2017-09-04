@@ -11,41 +11,45 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
+/**
+ * Copyright (c) 2016  W.I.S.V. 'Christiaan Huygens'
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 @RestController
 @RequestMapping("/api/v1/course")
 @CrossOrigin
 class CourseController
-@Autowired
-constructor(@Autowired val courseService: CourseService) {
+
+    constructor(@Autowired val courseService: CourseService) {
 
     @GetMapping
     fun readAllCourses(): ResponseEntity<*> {
-        return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "List of all courses", courseService.readAllCourses())
+        return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "List of all courses", courseService.getAllCourses())
     }
 
     @GetMapping("/active")
     fun getAllActiveCourse(): ResponseEntity<*> {
-        var courses = courseService.readAllCourses()
+        var courses = courseService.getAllCourses()
         courses = filterNoActiveCourses(courses)
 
         return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "List of all active courses", courses)
     }
 
-    private fun filterNoActiveCourses(courses: Collection<Course>): Collection<Course> {
-        val predecessorCourses = LinkedHashSet<Course>()
-
-        courses.forEach { item ->
-            if (item.predecessor != null) {
-                predecessorCourses.add(courseService.getCourseByCourseCode(item.predecessor!!)!!)
-            }
-        }
-
-        return courses.filter { item -> !predecessorCourses.contains(item) }
-    }
-
     @GetMapping("/search/active")
     fun searchForCourse(request: HttpServletRequest): ResponseEntity<*> {
-        var courses = courseService.readAllCourses()
+        var courses = courseService.getAllCourses()
         courses = filterNoActiveCourses(courses)
 
         if (request.getParameter("study") != null && request.getParameter("study") != "") {
@@ -80,4 +84,17 @@ constructor(@Autowired val courseService: CourseService) {
     @GetMapping("/{code}/predecessor")
     fun getCoursePredecessorByCode(@PathVariable code: String): Course?
             = courseService.getCoursePredecessorByCourseCode(code)
+
+
+    private fun filterNoActiveCourses(courses: Collection<Course>): Collection<Course> {
+        val predecessorCourses = LinkedHashSet<Course>()
+
+        courses.forEach { item ->
+            if (item.predecessor != null) {
+                predecessorCourses.add(courseService.getCourseByCourseCode(item.predecessor!!)!!)
+            }
+        }
+
+        return courses.filter { item -> !predecessorCourses.contains(item) }
+    }
 }
