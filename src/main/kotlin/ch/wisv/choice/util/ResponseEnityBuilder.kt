@@ -27,12 +27,15 @@ class ResponseEnityBuilder {
     companion object {
 
         fun createResponseEntity(httpStatus: HttpStatus, httpHeaders: HttpHeaders?, message: String, content: Any?): ResponseEntity<*> {
-            var responseBody = LinkedHashMap<String, Any>()
+            val responseBody = LinkedHashMap<String, Any>()
 
             responseBody.put("status", httpStatus.toString())
             responseBody.put("timestamp", LocalDateTime.now().toString())
             responseBody.put("message", message)
-            responseBody.put("content", content!!)
+
+            if (content != null) {
+                responseBody.put("content", content)
+            }
 
             if (httpHeaders == null) {
                 val httpHeaders = HttpHeaders()

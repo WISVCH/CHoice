@@ -35,11 +35,21 @@ class CourseController
 
     constructor(@Autowired val courseService: CourseService) {
 
+    /**
+     * Get list of courses.
+     *
+     * @return ResponseEntity<*>
+     */
     @GetMapping
-    fun readAllCourses(): ResponseEntity<*> {
+    fun getAllCourses(): ResponseEntity<*> {
         return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "List of all courses", courseService.getAllCourses())
     }
 
+    /**
+     * Get list of all active courses.
+     *
+     * @return ResponseEntity<*>
+     */
     @GetMapping("/active")
     fun getAllActiveCourse(): ResponseEntity<*> {
         var courses = courseService.getAllCourses()
@@ -48,7 +58,14 @@ class CourseController
         return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "List of all active courses", courses)
     }
 
-    @GetMapping("/search/active")
+    /**
+     * Get list of all active courses that match the search query.
+     *
+     * @param request: HttpServletRequest
+     *
+     * @return ResponseEntity<*>
+     */
+    @GetMapping("/active/search")
     fun searchForCourse(request: HttpServletRequest): ResponseEntity<*> {
         var courses = courseService.getAllCourses()
         courses = filterNoActiveCourses(courses)
@@ -78,15 +95,45 @@ class CourseController
         return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "List of all courses that match the search query", courses)
     }
 
+    /**
+     * Get course by course code.
+     *
+     * @return ResponseEntity<*>
+     */
     @GetMapping("/{code}")
-    fun getCourseByCode(@PathVariable code: String): Course?
-            = courseService.getCourseByCourseCode(code)
+    fun getCourseByCode(@PathVariable code: String): ResponseEntity<*> {
+        val course = courseService.getCourseByCourseCode(code)
 
+        return if (course != null) {
+            ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "Course $code", course)
+        } else {
+            ResponseEnityBuilder.createResponseEntity(HttpStatus.CONFLICT, "Course with course code $code not found.")
+        }
+    }
+
+    /**
+     * Get predecessor of a course.
+     *
+     * @return ResponseEntity<*>
+     */
     @GetMapping("/{code}/predecessor")
-    fun getCoursePredecessorByCode(@PathVariable code: String): Course?
-            = courseService.getCoursePredecessorByCourseCode(code)
+    fun getCoursePredecessorByCode(@PathVariable code: String): ResponseEntity<*> {
+        val predecessor = courseService.getCoursePredecessorByCourseCode(code)
 
+        return if (predecessor != null) {
+            ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "Predecessor of Course $code", predecessor)
+        } else {
+            ResponseEnityBuilder.createResponseEntity(HttpStatus.CONFLICT, "Course does not have a predecessor.")
+        }
+    }
 
+    /**
+     * Filter the no active courses.
+     *
+     * @param courses: Collection<Course>
+     *
+     * @return Collection<Course>
+     */
     private fun filterNoActiveCourses(courses: Collection<Course>): Collection<Course> {
         val predecessorCourses = LinkedHashSet<Course>()
 
