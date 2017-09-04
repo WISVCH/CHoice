@@ -9,6 +9,29 @@ import javax.validation.constraints.NotNull
  */
 @Entity
 data class Course(
-    @Id var code: String = "",
-    @NotNull var name: String = "",
-    var predecessor: String? = null)
+
+        /**
+         * Course code
+         */
+        @Id var code: String = "",
+
+        /**
+         * Name of the course
+         */
+        @NotNull var name: String = "",
+
+        /**
+         * Course code of the predecessor of this course
+         */
+        var predecessor: String? = null,
+
+        /**
+         * Study (AM, CS)
+         */
+        var study: Study? = null,
+
+        /**
+         * Study program of the course
+         */
+        var studyProgram: StudyProgram? = null
+)

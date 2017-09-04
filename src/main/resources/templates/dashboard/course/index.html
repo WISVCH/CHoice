@@ -56,6 +56,8 @@
                     <th>Code</th>
                     <th>Name</th>
                     <th>Predecessor</th>
+                    <th>Study</th>
+                    <th>Study program</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -64,6 +66,8 @@
                     <td th:text="${course.getCode()}"></td>
                     <td th:text="${course.getName()}"></td>
                     <td th:text="${course.getPredecessor()}"></td>
+                    <td th:text="${course.getStudy()}"></td>
+                    <td th:text="${course.getStudyProgram()}"></td>
                     <td>
                         <div class="btn-group" role="group" aria-label="...">
                             <a th:href="'delete/'" class="btn btn-danger">
@@ -90,7 +94,7 @@
             pageLength: 100,
             columnDefs: [
                 {
-                    targets: [3],
+                    targets: [5],
                     width: "50px"
                 }
             ]

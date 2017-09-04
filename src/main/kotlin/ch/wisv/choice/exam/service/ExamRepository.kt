@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ExamRepository : JpaRepository<Exam, Long> {
 
-    fun findAllByCourse_Code(code: String): Collection<Exam>
+    fun findAllByCourse_Code(code: String): List<Exam>
 
     fun deleteAllByCourse_Code(code: String)
 }

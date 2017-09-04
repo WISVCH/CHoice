@@ -29,5 +29,7 @@ data class Exam(
         // Should not include date or course code.
         var name: String = "",
 
-        @OneToOne(targetEntity = Document::class) var document: Document? = null
+        @OneToOne(targetEntity = Document::class) var document: Document? = null,
+
+        var includingAnswers: Boolean = false
 )

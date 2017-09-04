@@ -43,7 +43,7 @@
             <div th:replace="fragments/notification :: messages"></div>
 
             <!--/*@thymesVar id="exam" type="ch.wisv.choice.exam.model.Exam"*/-->
-            <form action="" method="POST" role="form" th:object="${exam}" class="form" enctype="multipart/form-data">
+            <form th:action="@{./}" method="POST" th:object="${exam}" class="form" enctype="multipart/form-data">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Add exam</h3>
@@ -51,7 +51,7 @@
                     <div class="panel-body">
                         <div class="form-group">
                             <label class="control-label">Course</label>
-                            <select th:field="${exam.course}" class="form-control" title="course">
+                            <select th:field="*{course}" class="form-control" title="course">
                                 <!--/*@thymesVar id="course" type="ch.wisv.choice.course.model.Course"*/-->
                                 <option th:each="course : ${courses}" th:value="${course.getCode()}"
                                         th:text="${course.getCode()} + ' - ' + ${course.getName()}"></option>
@@ -60,23 +60,32 @@
 
                         <div class="form-group">
                             <label class="control-label">Type</label>
-                            <select th:field="${exam.name}" class="form-control" title="name">
-                                <option value="Tentamen">Tentamen</option>
-                                <option value="Deeltentamen">Deeltentamen</option>
-                                <option value="Hertentamen">Hertentamen</option>
-                                <option value="Samenvatting">Samenvatting</option>
+                            <select th:field="*{name}" class="form-control" title="name">
+                                <option value="Exam">Exam</option>
+                                <option value="Mid-term">Mid-term</option>
+                                <option value="Resit">Resit</option>
+                                <option value="Summary">Summary</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label">Date</label>
-                            <input th:field="${exam.date}" type="date" class="form-control" title="date">
+                            <input th:field="*{date}" type="date" class="form-control" title="date">
                         </div>
 
                         <div class="form-group">
                             <label class="control-label">Document</label>
                             <input id="file" name="file" type="file" class="form-control" title="document">
                         </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" th:field="*{includingAnswers}"> Including answers
+                                </label>
+                            </div>
+                        </div>
+
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>

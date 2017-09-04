@@ -43,7 +43,7 @@
             <div th:replace="fragments/notification :: messages"></div>
 
             <!--/*@thymesVar id="course" type="ch.wisv.choice.course.model.Course"*/-->
-            <form action="" method="POST" role="form" th:object="${course}" class="form" enctype="multipart/form-data">
+            <form th:action="@{./}" method="POST" th:object="${course}" class="form" enctype="multipart/form-data">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Add course</h3>
@@ -61,12 +61,32 @@
 
                         <div class="form-group">
                             <label class="control-label">Course</label>
-                            <select th:field="${course.predecessor}" class="form-control" title="course">
 
-                                <!--/*@thymesVar id="temp" type="ch.wisv.choice.course.model.Course"*/-->
+                            <!--/*@thymesVar id="temp" type="ch.wisv.choice.course.model.Course"*/-->
+                            <select th:field="${course.predecessor}" class="form-control" title="course">
                                 <option value="">-- No predecessor --</option>
                                 <option th:each="temp : ${courses}" th:value="${temp.getCode()}"
                                         th:text="${temp.getCode()} + ' - ' + ${temp.getName()}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Study</label>
+
+                            <select th:field="${course.study}" class="form-control" title="study">
+                                <option value="">-- Select a study --</option>
+                                <option th:each="study : ${T(ch.wisv.choice.course.model.Study).values()}"
+                                        th:text="${study}" th:value="${study}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Study program</label>
+
+                            <select th:field="${course.studyProgram}" class="form-control" title="study">
+                                <option value="">-- Select a study program --</option>
+                                <option th:each="studyprogram : ${T(ch.wisv.choice.course.model.StudyProgram).values()}"
+                                        th:text="${studyprogram}" th:value="${studyprogram}"></option>
                             </select>
                         </div>
 
