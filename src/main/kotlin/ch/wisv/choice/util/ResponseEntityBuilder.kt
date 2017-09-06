@@ -22,11 +22,11 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import java.time.LocalDateTime
 
-class ResponseEnityBuilder {
+class ResponseEntityBuilder {
 
     companion object {
 
-        fun createResponseEntity(httpStatus: HttpStatus, httpHeaders: HttpHeaders?, message: String, content: Any?): ResponseEntity<*> {
+        fun createResponseEntity(httpStatus: HttpStatus, message: String, content: Any? = null, httpHeaders: HttpHeaders? = null): ResponseEntity<*> {
             val responseBody = LinkedHashMap<String, Any>()
 
             responseBody.put("status", httpStatus.toString())
@@ -43,19 +43,6 @@ class ResponseEnityBuilder {
             }
 
             return ResponseEntity(responseBody, httpHeaders, httpStatus)
-        }
-
-        fun createResponseEntity(httpStatus: HttpStatus, message: String, content: Any): ResponseEntity<*> {
-            return createResponseEntity(httpStatus, null, message, content)
-        }
-
-        fun createResponseEntity(httpStatus: HttpStatus, message: String): ResponseEntity<*> {
-            return createResponseEntity(httpStatus, null, message, null)
-        }
-
-        fun createResponseEntity(httpStatus: HttpStatus, httpHeaders: HttpHeaders,
-                                 message: String): ResponseEntity<*> {
-            return createResponseEntity(httpStatus, httpHeaders, message, null)
         }
     }
 }

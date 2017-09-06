@@ -21,7 +21,7 @@ import ch.wisv.choice.course.model.Course
 import ch.wisv.choice.course.model.Study
 import ch.wisv.choice.course.model.StudyProgram
 import ch.wisv.choice.course.service.CourseService
-import ch.wisv.choice.util.ResponseEnityBuilder
+import ch.wisv.choice.util.ResponseEntityBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -42,7 +42,7 @@ class CourseController
      */
     @GetMapping
     fun getAllCourses(): ResponseEntity<*> {
-        return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "List of all courses", courseService.getAllCourses())
+        return ResponseEntityBuilder.createResponseEntity(HttpStatus.OK, "List of all courses", courseService.getAllCourses())
     }
 
     /**
@@ -55,7 +55,7 @@ class CourseController
         var courses = courseService.getAllCourses()
         courses = filterNoActiveCourses(courses)
 
-        return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "List of all active courses", courses)
+        return ResponseEntityBuilder.createResponseEntity(HttpStatus.OK, "List of all active courses", courses)
     }
 
     /**
@@ -92,7 +92,7 @@ class CourseController
             }
         }
 
-        return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "List of all courses that match the search query", courses)
+        return ResponseEntityBuilder.createResponseEntity(HttpStatus.OK, "List of all courses that match the search query", courses)
     }
 
     /**
@@ -105,9 +105,9 @@ class CourseController
         val course = courseService.getCourseByCourseCode(code)
 
         return if (course != null) {
-            ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "Course $code", course)
+            ResponseEntityBuilder.createResponseEntity(HttpStatus.OK, "Course $code", course)
         } else {
-            ResponseEnityBuilder.createResponseEntity(HttpStatus.CONFLICT, "Course with course code $code not found.")
+            ResponseEntityBuilder.createResponseEntity(HttpStatus.CONFLICT, "Course with course code $code not found.")
         }
     }
 
@@ -121,9 +121,9 @@ class CourseController
         val predecessor = courseService.getCoursePredecessorByCourseCode(code)
 
         return if (predecessor != null) {
-            ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "Predecessor of Course $code", predecessor)
+            ResponseEntityBuilder.createResponseEntity(HttpStatus.OK, "Predecessor of Course $code", predecessor)
         } else {
-            ResponseEnityBuilder.createResponseEntity(HttpStatus.CONFLICT, "Course does not have a predecessor.")
+            ResponseEntityBuilder.createResponseEntity(HttpStatus.CONFLICT, "Course does not have a predecessor.")
         }
     }
 

@@ -21,7 +21,7 @@ import ch.wisv.choice.course.model.Course
 import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.exam.service.ExamService
-import ch.wisv.choice.util.ResponseEnityBuilder
+import ch.wisv.choice.util.ResponseEntityBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -42,7 +42,7 @@ class ExamController
         // Remove ByteArray
         exams.forEach { exam -> exam.document!!.bytes = kotlin.ByteArray(0) }
 
-        return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "Successful", exams)
+        return ResponseEntityBuilder.createResponseEntity(HttpStatus.OK, "Successful", exams)
     }
 
     @GetMapping("/course/{code}")
@@ -61,7 +61,7 @@ class ExamController
             exams.forEach { exam -> exam.document!!.bytes = kotlin.ByteArray(0) }
         }
 
-        return ResponseEnityBuilder.createResponseEntity(HttpStatus.OK, "Successful", exams)
+        return ResponseEntityBuilder.createResponseEntity(HttpStatus.OK, "Successful", exams)
     }
 
     @GetMapping("/{examId}")
