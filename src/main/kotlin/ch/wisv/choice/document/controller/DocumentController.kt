@@ -20,7 +20,6 @@ package ch.wisv.choice.document.controller
 import ch.wisv.choice.document.model.Document
 import ch.wisv.choice.document.model.DocumentDTO
 import ch.wisv.choice.document.service.DocumentService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -28,9 +27,7 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping("/api/v1/document")
 @CrossOrigin
-class DocumentController
-
-    constructor(@Autowired val documentService: DocumentService) {
+class DocumentController(val documentService: DocumentService) {
 
     /**
      * Create a new document from MultipartFile and DocumentDTO

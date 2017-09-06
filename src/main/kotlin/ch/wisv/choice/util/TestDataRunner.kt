@@ -25,7 +25,6 @@ import ch.wisv.choice.document.model.Document
 import ch.wisv.choice.document.service.DocumentRepository
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.exam.service.ExamRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
@@ -33,7 +32,9 @@ import java.time.LocalDate
 
 @Component
 @Profile("dev")
-class TestDataRunner(@Autowired val courseRepository: CourseRepository, @Autowired val documentRepository: DocumentRepository, @Autowired val examRepository: ExamRepository) : CommandLineRunner {
+class TestDataRunner(val courseRepository: CourseRepository,
+                     val documentRepository: DocumentRepository,
+                     val examRepository: ExamRepository) : CommandLineRunner {
 
     /**
      * Callback used to run the bean.

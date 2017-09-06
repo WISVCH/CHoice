@@ -22,7 +22,6 @@ import ch.wisv.choice.course.model.Study
 import ch.wisv.choice.course.model.StudyProgram
 import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.util.ResponseEntityBuilder
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -31,9 +30,7 @@ import javax.servlet.http.HttpServletRequest
 @RestController
 @RequestMapping("/api/v1/course")
 @CrossOrigin
-class CourseController
-
-    constructor(@Autowired val courseService: CourseService) {
+class CourseController(val courseService: CourseService) {
 
     /**
      * Get list of courses.
