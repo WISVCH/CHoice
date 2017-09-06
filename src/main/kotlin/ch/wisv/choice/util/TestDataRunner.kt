@@ -54,16 +54,17 @@ class TestDataRunner(val courseRepository: CourseRepository,
         val course3 = Course("TI2206M", "Reeele analyse", null, Study.AM, StudyProgram.SECOND_YEAR)
         courseRepository.saveAndFlush(course3)
 
-        val document = Document(1, kotlin.ByteArray(0), "TI1505 Exam July 8, 2017")
-        documentRepository.saveAndFlush(document)
-
-        val exam = Exam(1, course, LocalDate.now(), "Exam", document)
+        val exam = Exam(1, course, LocalDate.now(), "Exam")
         examRepository.saveAndFlush(exam)
 
-        val document2 = Document(2, kotlin.ByteArray(0), "TI1500 Exam July 8, 2016")
+        val document = Document(1, kotlin.ByteArray(0), "TI1505 Exam July 8, 2017", exam)
+        documentRepository.saveAndFlush(document)
+
+        val exam2 = Exam(2, predecessor, LocalDate.now(), "Exam")
+        examRepository.saveAndFlush(exam2)
+
+        val document2 = Document(2, kotlin.ByteArray(0), "TI1500 Exam July 8, 2016", exam2)
         documentRepository.saveAndFlush(document2)
 
-        val exam2 = Exam(2, predecessor, LocalDate.now(), "Exam", document, true)
-        examRepository.saveAndFlush(exam2)
     }
 }

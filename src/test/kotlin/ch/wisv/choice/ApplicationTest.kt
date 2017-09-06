@@ -45,14 +45,6 @@ class ApplicationTest {
                      var documentService: DocumentService) : CommandLineRunner {
 
         override fun run(vararg evt: String) {
-            val file = File("src/test/resources/TI1300 - Tentamen.pdf")
-            val document = Document(null, file.readBytes(), "Tentamen")
-            documentService.storeDocument(document)
-
-            val file2 = File("src/test/resources/TI1300 - Antwoorden.pdf")
-            val document2 = Document(null, file2.readBytes(), "Antwoorden")
-            documentService.storeDocument(document2)
-
             val course11 = Course("TI0011", "Test Course 1")
             courseService.createCourse(course11)
             val course12 = Course("TI0012", "Test Course 1.2", "TI0011")
@@ -60,10 +52,18 @@ class ApplicationTest {
             val course21 = Course("TI0021", "Test Course 2")
             courseService.createCourse(course21)
 
-            val exam1 = Exam(null, course11, LocalDate.now().plusWeeks(1), "Tentamen", document, false)
+            val exam1 = Exam(null, course11, LocalDate.now().plusWeeks(1), "Tentamen")
             examService.createExam(exam1)
-            val exam2 = Exam(null, course12, LocalDate.now().plusWeeks(2), "Hertentamen", document2, true)
+            val exam2 = Exam(null, course12, LocalDate.now().plusWeeks(2), "Hertentamen")
             examService.createExam(exam2)
+
+            val file = File("src/test/resources/TI1300 - Tentamen.pdf")
+            val document = Document(null, file.readBytes(), "Tentamen", exam1)
+            documentService.storeDocument(document)
+
+            val file2 = File("src/test/resources/TI1300 - Antwoorden.pdf")
+            val document2 = Document(null, file2.readBytes(), "Antwoorden", exam2)
+            documentService.storeDocument(document2)
         }
     }
 }

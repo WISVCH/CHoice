@@ -20,7 +20,6 @@ package ch.wisv.choice.integration
 import ch.wisv.choice.course.model.Course
 import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.document.model.Document
-import ch.wisv.choice.document.model.DocumentDTO
 import ch.wisv.choice.document.service.DocumentService
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.exam.service.ExamService
@@ -52,11 +51,11 @@ class ExamControllerTest : IntegrationTest() {
         val course = Course("TI0001", "Test Course")
         courseService.createCourse(course)
 
-        val document = Document(1, kotlin.ByteArray(0), "Examen")
-        documentService.storeDocument(document)
-
-        val exam = Exam(null, course, LocalDate.now(), "Examen", document, true)
+        val exam = Exam(null, course, LocalDate.now(), "Examen")
         examService.createExam(exam)
+
+        val document = Document(1, ByteArray(0), "Examen", exam)
+        documentService.storeDocument(document)
 
         //@formatter:off
         given().

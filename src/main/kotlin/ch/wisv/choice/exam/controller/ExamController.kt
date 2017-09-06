@@ -21,7 +21,7 @@ import ch.wisv.choice.course.model.Course
 import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.exam.service.ExamService
-import ch.wisv.choice.util.ResponseEntityBuilder
+import ch.wisv.choice.util.ResponseEntityBuilder.Companion.createResponseEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -34,14 +34,8 @@ class ExamController(val examService: ExamService,
                      val courseService: CourseService) {
 
     @GetMapping()
-    fun getExams(): ResponseEntity<*> {
-        val exams = examService.getExams()
-
-        // Remove ByteArray
-        exams.forEach { exam -> exam.document!!.bytes = kotlin.ByteArray(0) }
-
-        return ResponseEntityBuilder.createResponseEntity(HttpStatus.OK, "Successful", exams)
-    }
+    fun getExams(): ResponseEntity<*>
+            = createResponseEntity(HttpStatus.OK, "Successful", examService.getExams())
 
     @GetMapping("/course/{code}")
     fun getExamsByCourse(@PathVariable code: String): Collection<Exam>
@@ -54,12 +48,8 @@ class ExamController(val examService: ExamService,
 
         if (course != null) {
             exams = getPredecessorsExams(course, HashSet())
-
-            // Remove ByteArray
-            exams.forEach { exam -> exam.document!!.bytes = kotlin.ByteArray(0) }
         }
-
-        return ResponseEntityBuilder.createResponseEntity(HttpStatus.OK, "Successful", exams)
+        return createResponseEntity(HttpStatus.OK, "Successful", exams)
     }
 
     @GetMapping("/{examId}")

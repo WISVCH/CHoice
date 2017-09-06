@@ -18,7 +18,6 @@
 package ch.wisv.choice.exam.model
 
 import ch.wisv.choice.course.model.Course
-import ch.wisv.choice.document.model.Document
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -39,9 +38,5 @@ data class Exam(
 
         // Used to extinguish between different types of exams: Tentamen, Hertentamen, Deeltentamen, etc..
         // Should not include date or course code.
-        var name: String = "",
-
-        @OneToOne(targetEntity = Document::class) var document: Document? = null,
-
-        var includingAnswers: Boolean = false
+        var name: String = ""
 )

@@ -29,7 +29,7 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
                           val examService: ExamService,
                           val courseService: CourseService) : DocumentService {
     override fun storeDocument(file: MultipartFile, dto: DocumentDTO): Document {
-        val document = Document(bytes = file.bytes, name = dto.name)
+        val document = Document(bytes = file.bytes, name = dto.name, exam = dto.exam)
 
         return storeDocument(document)
     }
