@@ -38,7 +38,7 @@ class DashboardExamController(val examService: ExamService,
     /**
      * Dashboard exam index.
      */
-    @GetMapping("/")
+    @GetMapping
     fun index(model: Model): String {
         model.addAttribute("exams", examService.getExams())
 
