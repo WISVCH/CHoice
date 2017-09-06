@@ -21,6 +21,7 @@ import ch.wisv.connect.client.CHUserInfoFetcher
 import ch.wisv.connect.common.model.CHUserInfo
 import com.google.common.collect.ImmutableSet
 import org.mitre.openid.connect.client.OIDCAuthenticationFilter
+import org.mitre.openid.connect.client.OIDCAuthenticationFilter.FILTER_PROCESSES_URL
 import org.mitre.openid.connect.client.OIDCAuthenticationProvider
 import org.mitre.openid.connect.client.service.ClientConfigurationService
 import org.mitre.openid.connect.client.service.ServerConfigurationService
@@ -46,12 +47,6 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
-
-import java.util.Collections
-
-import org.mitre.openid.connect.client.OIDCAuthenticationFilter.FILTER_PROCESSES_URL
-import org.springframework.cglib.core.Predicate
-import org.springframework.security.core.GrantedAuthority
 
 @Configuration
 @EnableWebSecurity
@@ -123,7 +118,7 @@ class CHConnectSecurityConfiguration(private val properties: CHConnectConfigurat
         val authenticationProvider = OIDCAuthenticationProvider()
         authenticationProvider.setUserInfoFetcher(CHUserInfoFetcher())
 
-        authenticationProvider.setAuthoritiesMapper { idToken, userInfo ->
+        authenticationProvider.setAuthoritiesMapper { _, userInfo ->
             if (userInfo is CHUserInfo) {
                 if (properties.adminGroups!!.stream().anyMatch { userInfo.ldapGroups.contains(it) }) {
                     ImmutableSet.of(ROLE_ADMIN, ROLE_USER)
