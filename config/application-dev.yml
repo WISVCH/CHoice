@@ -21,9 +21,16 @@ spring:
     encoding: UTF-8
     content-type: text/html
 
+  http:
+    multipart:
+      max-file-size: 64MB
+      max-request-size: 64MB
+
 server:
   port: 8080
   context-path: /choice
+
+security.basic.enabled: false
 
 wisvch:
   connect:
