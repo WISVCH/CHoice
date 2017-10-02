@@ -21,7 +21,7 @@ import ch.wisv.choice.course.model.Course
 import java.time.LocalDate
 import javax.persistence.*
 
-@Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("course", "date"))))
+@Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("course", "name", "date"))))
 @Entity
 data class Exam(
 
@@ -36,7 +36,9 @@ data class Exam(
         @JoinColumn(name = "date")
         var date: LocalDate = LocalDate.now(),
 
-        // Used to extinguish between different types of exams: Tentamen, Hertentamen, Deeltentamen, etc..
+        var includingAnswers: Boolean = false,
+
+        // Used to extinguish between different types of exams: Exam, Resit, Mid term, Answers, etc..
         // Should not include date or course code.
         var name: String = ""
 )

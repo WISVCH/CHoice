@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/exam", produces = arrayOf(MediaType.APPLICATION_JSON_UTF8_VALUE))
-@CrossOrigin
 class ExamController(val examService: ExamService,
                      val courseService: CourseService) {
 

@@ -82,6 +82,7 @@
                                 <option value="Mid-term">Mid-term</option>
                                 <option value="Resit">Resit</option>
                                 <option value="Summary">Summary</option>
+                                <option value="Answers">Answers</option>
                             </select>
                         </div>
 
@@ -93,6 +94,7 @@
                         <div class="form-group">
                             <label class="control-label">Document</label>
                             <input id="file" name="file" type="file" class="form-control" title="document">
+                            <span class="help-block">Max file size of <b>64MB</b>.</span>
                         </div>
 
                         <div class="form-group">
@@ -123,8 +125,8 @@
         if ($(this).get(0).files.length > 0) { // only if a file is selected
             var fileSize = $(this).get(0).files[0].size;
 
-            if (fileSize > 1048576) {
-                alert('The file exceeds its maximum permitted size of 1048576 bytes');
+            if (fileSize > 64000000) {
+                alert('The file exceeds its maximum permitted size of 64 megabytes');
                 $(this).val('');
             }
         }

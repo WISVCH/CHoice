@@ -72,8 +72,9 @@
                 <tr>
                     <th>Course</th>
                     <th>Exam</th>
-                    <th>Document</th>
-                    <th>Actions</th>
+                    <th class="text-center">Answers</th>
+                    <th class="text-center">Document</th>
+                    <th class="text-center">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -81,11 +82,16 @@
                     <td th:text="${exam.getCourse().getCode()} + ' ' + ${exam.getCourse().getName()}"></td>
                     <td th:text="${exam.getName()} + ' ' + ${exam.getDate()}"></td>
                     <td>
-                        <a th:href="@{'/api/v1/document/' + ${exam.getDocument().getId()}}" th:text="${exam.getDocument().getName()}"></a>
+                        <i class="fa fa-2x" th:classappend="${exam.includingAnswers ? 'fa-check text-success' : 'fa-ban text-danger'}"></i>
+                    </td>
+                    <td>
+                        <a target="_blank" class="btn btn-info" th:href="@{'/api/v1/document/exam/' + ${exam.getId()}}">
+                            <i class="fa fa-file-o"></i>
+                        </a>
                     </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="...">
-                            <a th:href="'delete/'" class="btn btn-danger">
+                            <a href="#" class="btn btn-danger delete-btn">
                                 <i class="glyphicon glyphicon-remove"></i>
                             </a>
                         </div>
@@ -109,7 +115,7 @@
             pageLength: 100,
             columnDefs: [
                 {
-                    targets: [3],
+                    targets: [2, 3, 4],
                     width: "50px"
                 },
                 {
@@ -131,6 +137,12 @@
                     }
                 });
             }
+        });
+
+        $(".delete-btn").on('click', function (e) {
+            e.preventDefault();
+
+            $("#deleteCourse").submit();
         });
     })
 </script>

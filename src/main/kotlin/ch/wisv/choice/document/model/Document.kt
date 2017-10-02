@@ -24,6 +24,9 @@ import javax.persistence.*
 @Entity
 data class Document(
         @GeneratedValue @Id val id: Long? = null,
+
         @Lob var bytes: ByteArray,
+
         var name: String,
-        @ManyToOne(targetEntity = Exam::class) var exam: Exam)
+
+        @OneToOne(targetEntity = Exam::class) var exam: Exam)

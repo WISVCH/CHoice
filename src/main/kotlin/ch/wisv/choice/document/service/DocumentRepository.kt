@@ -18,8 +18,12 @@
 package ch.wisv.choice.document.service
 
 import ch.wisv.choice.document.model.Document
+import ch.wisv.choice.exam.model.Exam
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface DocumentRepository : JpaRepository<Document, Long>
+interface DocumentRepository : JpaRepository<Document, Long> {
+
+    fun findByExam(exam: Exam): Document
+}

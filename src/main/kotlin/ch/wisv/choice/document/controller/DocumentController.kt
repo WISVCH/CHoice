@@ -20,13 +20,13 @@ package ch.wisv.choice.document.controller
 import ch.wisv.choice.document.model.Document
 import ch.wisv.choice.document.model.DocumentDTO
 import ch.wisv.choice.document.service.DocumentService
+import ch.wisv.choice.exam.service.ExamService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/api/v1/document")
-@CrossOrigin
 class DocumentController(val documentService: DocumentService) {
 
     /**
@@ -59,4 +59,14 @@ class DocumentController(val documentService: DocumentService) {
     @GetMapping("/{documentId}", produces = arrayOf(MediaType.APPLICATION_PDF_VALUE))
     fun getDocumentById(@PathVariable documentId: Long): ByteArray
             = documentService.getDocumentBytesById(documentId)
+
+    /**
+     * Show document ByteArray as application/pdf
+     *
+     * @return ByteArray
+     */
+    @ResponseBody
+    @GetMapping("/exam/{examId}", produces = arrayOf(MediaType.APPLICATION_PDF_VALUE))
+    fun getDocumentByExamId(@PathVariable examId: Long)
+        = documentService.getDocumentBytesByExamId(examId)
 }

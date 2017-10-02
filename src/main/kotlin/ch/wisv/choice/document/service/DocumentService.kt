@@ -30,4 +30,6 @@ interface DocumentService {
     fun getDocumentsMetadata(): Collection<Document>
 
     fun getDocumentBytesById(id: Long): ByteArray
+
+    fun getDocumentBytesByExamId(id: Long): ByteArray
 }

@@ -18,7 +18,6 @@
 package ch.wisv.choice.dashboard
 
 import ch.wisv.choice.course.service.CourseService
-import ch.wisv.choice.document.model.Document
 import ch.wisv.choice.document.model.DocumentDTO
 import ch.wisv.choice.document.service.DocumentService
 import ch.wisv.choice.exam.model.Exam
@@ -64,10 +63,10 @@ class DashboardExamController(val examService: ExamService,
      * POST exam create.
      */
     @PostMapping("/create/")
-    fun create(redirect: RedirectAttributes, @ModelAttribute model: Document, @RequestParam("file") file: MultipartFile): String {
+    fun create(redirect: RedirectAttributes, @ModelAttribute model: Exam, @RequestParam("file") file: MultipartFile): String {
         return try {
-            documentService.storeDocument(file, DocumentDTO(model.name, model.exam))
-            examService.createExam(model.exam)
+            examService.createExam(model)
+            documentService.storeDocument(file, DocumentDTO(model.course.code + " " + model.name + " " + model.date, model))
 
             "redirect:/dashboard/exams/"
         } catch (e: CHoiceException) {
@@ -76,5 +75,15 @@ class DashboardExamController(val examService: ExamService,
 
             "redirect:/dashboard/exams/create/"
         }
+    }
+
+    /**
+     * DELETE exam delete.
+     */
+    @DeleteMapping("/delete/")
+    fun delete(redirect: RedirectAttributes, @RequestParam("courseId") courseId: String ): String {
+        redirect.addFlashAttribute("message", "Course $courseId successfully deleted!")
+
+        return "redirect:/dashboard/exams/"
     }
 }

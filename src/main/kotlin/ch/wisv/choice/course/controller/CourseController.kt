@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping("/api/v1/course")
-@CrossOrigin
 class CourseController(val courseService: CourseService) {
 
     /**

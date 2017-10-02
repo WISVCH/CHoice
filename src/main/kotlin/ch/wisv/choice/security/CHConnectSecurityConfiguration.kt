@@ -45,6 +45,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
@@ -60,15 +63,18 @@ class CHConnectSecurityConfiguration(private val properties: CHConnectConfigurat
      */
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        http.addFilterBefore(oidcAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter::class.java)
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
+        // @formatter:off
+        http.cors().and()
+                    .addFilterBefore(oidcAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter::class.java)
+                    .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
                 .and()
-                .authorizeRequests()
-                .antMatchers("/dashboard/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
+                    .authorizeRequests()
+                    .antMatchers("/dashboard/**").hasRole("ADMIN")
+                    .anyRequest().permitAll()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/")
+                    .logout()
+                    .logoutSuccessUrl("/")
+        // @formatter:on
     }
 
     /**
@@ -171,6 +177,14 @@ class CHConnectSecurityConfiguration(private val properties: CHConnectConfigurat
         val serverConfigurationService = DynamicServerConfigurationService()
         serverConfigurationService.whitelist = setOf<String>(properties.issuerUri!!)
         return serverConfigurationService
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", CorsConfiguration().applyPermitDefaultValues())
+
+        return source
     }
 
 }

@@ -41,9 +41,16 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
     override fun getDocumentsMetadata(): Collection<Document> {
         val documents = documentRepository.findAll()
         documents.forEach { it.bytes = kotlin.ByteArray(0) }
+
         return documents
     }
 
     override fun getDocumentBytesById(id: Long): ByteArray
             = documentRepository.findOne(id).bytes
+
+    override fun getDocumentBytesByExamId(id: Long): ByteArray {
+        val exam = examService.getExamById(id)
+
+        return documentRepository.findByExam(exam).bytes
+    }
 }
