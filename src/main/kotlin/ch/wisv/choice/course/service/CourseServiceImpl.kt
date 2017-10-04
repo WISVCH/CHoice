@@ -64,9 +64,9 @@ class CourseServiceImpl(val courseRepository: CourseRepository, val examReposito
      * @return Course?
      */
     override fun getCoursePredecessorByCourseCode(courseCode: String): Course? {
-        val (_, _, predecessor) = courseRepository.findOne(courseCode)
+        val (_, _, predecessor) = getCourseByCourseCode(courseCode)
 
-        return courseRepository.findOne(predecessor)
+        return if (predecessor == null) null else courseRepository.findOne(predecessor)
     }
 
     /**
