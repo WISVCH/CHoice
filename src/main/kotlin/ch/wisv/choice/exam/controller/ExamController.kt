@@ -21,11 +21,15 @@ import ch.wisv.choice.course.model.Course
 import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.exam.service.ExamService
+import ch.wisv.choice.util.CHoiceException
 import ch.wisv.choice.util.ResponseEntityBuilder.Companion.createResponseEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/exam", produces = arrayOf(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -34,26 +38,38 @@ class ExamController(val examService: ExamService,
 
     @GetMapping()
     fun getExams(): ResponseEntity<*>
-            = createResponseEntity(HttpStatus.OK, "Successful", examService.getExams())
+            = createResponseEntity(HttpStatus.OK, "List of all the exams", examService.getExams())
 
     @GetMapping("/course/{code}")
-    fun getExamsByCourse(@PathVariable code: String): Collection<Exam>
-            = examService.getExamsByCourse(code)
+    fun getExamsByCourse(@PathVariable code: String): ResponseEntity<*> {
+        return try {
+            createResponseEntity(HttpStatus.OK, "List of all the exams of course " + code, examService.getExamsByCourse(code))
+        } catch (e: CHoiceException) {
+            createResponseEntity(HttpStatus.NOT_FOUND, e.message!!)
+        }
+    }
 
     @GetMapping("/course/{code}/including")
     fun getExamByCourseAndPredecessors(@PathVariable code: String): ResponseEntity<*> {
-        val course = courseService.getCourseByCourseCode(code)
-        var exams: HashSet<Exam> = HashSet()
+        return try {
+            val course = courseService.getCourseByCourseCode(code)
+            val exams: HashSet<Exam> = getPredecessorsExams(course, HashSet())
 
-        if (course != null) {
-            exams = getPredecessorsExams(course, HashSet())
+            createResponseEntity(HttpStatus.OK, "List of all the exams of course $code including exams of predecessors", exams)
+        } catch (e: CHoiceException) {
+            createResponseEntity(HttpStatus.NOT_FOUND, e.message!!)
         }
-        return createResponseEntity(HttpStatus.OK, "Successful", exams)
+
     }
 
     @GetMapping("/{examId}")
-    fun getExamById(@PathVariable examId: Long): Exam
-            = examService.getExamById(examId)
+    fun getExamById(@PathVariable examId: Long): ResponseEntity<*> {
+        return try {
+            createResponseEntity(HttpStatus.OK, "Data about exam " + examId, examService.getExamById(examId))
+        } catch (e: CHoiceException) {
+            createResponseEntity(HttpStatus.NOT_FOUND, e.message!!)
+        }
+    }
 
     private fun getPredecessorsExams(course: Course?, exams: HashSet<Exam>): HashSet<Exam> {
         if (course != null) {

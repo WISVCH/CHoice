@@ -18,11 +18,12 @@
 package ch.wisv.choice.course.service
 
 import ch.wisv.choice.course.model.Course
+import ch.wisv.choice.exam.service.ExamRepository
 import ch.wisv.choice.util.CHoiceException
 import org.springframework.stereotype.Service
 
 @Service
-class CourseServiceImpl(val courseRepository: CourseRepository) : CourseService {
+class CourseServiceImpl(val courseRepository: CourseRepository, val examRepository: ExamRepository) : CourseService {
 
     /**
      * Get all list of all Course
@@ -52,8 +53,8 @@ class CourseServiceImpl(val courseRepository: CourseRepository) : CourseService 
      *
      * @return Course?
      */
-    override fun getCourseByCourseCode(courseCode: String): Course?
-            = courseRepository.findOne(courseCode)
+    override fun getCourseByCourseCode(courseCode: String): Course
+            = courseRepository.findOne(courseCode) ?: throw CHoiceException("Course with courseCode $courseCode not found")
 
     /**
      * Get the Course predecessor by Course Code.
@@ -64,6 +65,7 @@ class CourseServiceImpl(val courseRepository: CourseRepository) : CourseService 
      */
     override fun getCoursePredecessorByCourseCode(courseCode: String): Course? {
         val (_, _, predecessor) = courseRepository.findOne(courseCode)
+
         return courseRepository.findOne(predecessor)
     }
 
@@ -72,8 +74,28 @@ class CourseServiceImpl(val courseRepository: CourseRepository) : CourseService 
      *
      * @param courseCode: String
      */
-    override fun deleteCourseCode(courseCode: String)
-            = courseRepository.delete(courseCode)
+    override fun deleteCourseCode(courseCode: String) {
+        val course = getCourseByCourseCode(courseCode)
+
+        deleteCourse(course)
+    }
+
+    /**
+     * Delete a given Course.
+     *
+     * @param course: Course
+     */
+    override fun deleteCourse(course: Course) {
+        val exams = examRepository.findAllByCourse(course)
+
+        if (exams.isNotEmpty()) {
+            throw CHoiceException("Course is already linked to an Exam and therefor can not be deleted!");
+        }
+
+        // TODO: check if Course is not predecessor of other Course.
+
+        courseRepository.delete(course)
+    }
 
     /**
      * Assert if the course given a valid Course
@@ -81,11 +103,7 @@ class CourseServiceImpl(val courseRepository: CourseRepository) : CourseService 
     fun assertIsValid(course: Course) {
         val predecessor = course.predecessor
 
-        if (predecessor != "") {
-            if (predecessor != null && getCourseByCourseCode(predecessor) == null) {
-                throw CHoiceException("Predecessor course doesn't exist!")
-            }
-        } else {
+        if (predecessor == "") {
             course.predecessor = null
         }
 

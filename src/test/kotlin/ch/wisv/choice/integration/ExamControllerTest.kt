@@ -17,70 +17,93 @@
 
 package ch.wisv.choice.integration
 
-import ch.wisv.choice.course.model.Course
-import ch.wisv.choice.course.service.CourseService
-import ch.wisv.choice.document.model.Document
-import ch.wisv.choice.document.service.DocumentService
-import ch.wisv.choice.exam.model.Exam
-import ch.wisv.choice.exam.service.ExamService
 import io.restassured.RestAssured.given
 import org.apache.http.HttpStatus
-import org.hamcrest.Matchers.hasItem
+import org.hamcrest.Matchers.*
 import org.junit.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
-import java.time.LocalDate
 
 @ActiveProfiles("test")
 class ExamControllerTest : IntegrationTest() {
 
-    @Autowired
-    lateinit var examService : ExamService
-    @Autowired
-    lateinit var courseService : CourseService
-    @Autowired
-    lateinit var documentService : DocumentService
-
-    @Test
-    fun createExam() {
-
-    }
-
     @Test
     fun getExams() {
-        val course = Course("TI0001", "Test Course")
-        courseService.createCourse(course)
-
-        val exam = Exam(null, course, LocalDate.now(), "Examen")
-        examService.createExam(exam)
-
-        val document = Document(1, ByteArray(0), "Examen", exam)
-        documentService.storeDocument(document)
-
         //@formatter:off
         given().
         `when`().
             get("/api/v1/exam").
         then().
             statusCode(HttpStatus.SC_OK).
-            body("content.name", hasItem(exam.name))
+            body("content.name", hasItems("Tentamen", "Hertentamen"))
         // @formatter:on
     }
 
     @Test
     fun getExamsByCourse() {
+        //@formatter:off
+        given().
+        `when`().
+            get("/api/v1/exam/course/TI0011").
+        then().
+            statusCode(HttpStatus.SC_OK).
+            body("content.name", hasItem("Tentamen"))
+        // @formatter:on
+    }
+
+    @Test
+    fun getExamsByCourseNotExists() {
+        //@formatter:off
+        given().
+        `when`().
+            get("/api/v1/exam/course/TB1234").
+        then().
+            statusCode(HttpStatus.SC_NOT_FOUND)
+        // @formatter:on
+    }
+
+    @Test
+    fun getExamsByCourseAndPredecessors() {
+        //@formatter:off
+        given().
+        `when`().
+            get("/api/v1/exam/course/TI0012/including").
+        then().
+            statusCode(HttpStatus.SC_OK).
+            body("content.name", hasItem("Tentamen"))
+        // @formatter:on
+    }
+
+    @Test
+    fun getExamsByCourseAndPredecessorsIncludingNotExists() {
+        //@formatter:off
+        given().
+        `when`().
+            get("/api/v1/exam/course/TI0002/including").
+        then().
+            statusCode(HttpStatus.SC_NOT_FOUND)
+        // @formatter:on
     }
 
     @Test
     fun getExamById() {
+        //@formatter:off
+        given().
+        `when`().
+            get("/api/v1/exam/1").
+        then().
+            statusCode(HttpStatus.SC_OK).
+            body("content.name", `is`("Tentamen"))
+        // @formatter:on
     }
 
     @Test
-    fun deleteExam() {
+    fun getExamByIdNotExists() {
+        //@formatter:off
+        given().
+        `when`().
+            get("/api/v1/exam/2804").
+        then().
+            statusCode(HttpStatus.SC_NOT_FOUND)
+        // @formatter:on
     }
-
-    @Test
-    fun deleteExamsByCourseCode() {
-    }
-
 }

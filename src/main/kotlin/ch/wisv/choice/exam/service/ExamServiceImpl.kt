@@ -17,12 +17,13 @@
 
 package ch.wisv.choice.exam.service
 
+import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.util.CHoiceException
 import org.springframework.stereotype.Service
 
 @Service
-class ExamServiceImpl(val examRepository: ExamRepository) : ExamService {
+class ExamServiceImpl(val examRepository: ExamRepository, val courseService: CourseService) : ExamService {
 
     override fun createExam(exam: Exam): Exam {
         val filtered = getExamsByCourse(exam.course.code).filter { item -> item.name == exam.name && item.date == exam.date }
@@ -37,15 +38,21 @@ class ExamServiceImpl(val examRepository: ExamRepository) : ExamService {
     override fun getExams(): Collection<Exam>
             = examRepository.findAll()
 
-    override fun getExamsByCourse(code: String): Collection<Exam>
-            = examRepository.findAllByCourse_Code(code)
+    override fun getExamsByCourse(code: String): Collection<Exam> {
+        val course = courseService.getCourseByCourseCode(code)
+
+        return examRepository.findAllByCourse(course)
+    }
 
     override fun getExamById(id: Long): Exam
-            = examRepository.findOne(id)
+        = examRepository.findOne(id) ?: throw CHoiceException("Exam with id $id not found")
 
     override fun deleteExam(exam: Exam)
             = examRepository.delete(exam)
 
-    override fun deleteExamsByCourse(code: String)
-            = examRepository.deleteAllByCourse_Code(code)
+    override fun deleteExamsByCourse(code: String) {
+        val course = courseService.getCourseByCourseCode(code)
+
+        examRepository.deleteAllByCourse(course)
+    }
 }

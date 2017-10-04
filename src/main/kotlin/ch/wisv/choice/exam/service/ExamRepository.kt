@@ -17,6 +17,7 @@
 
 package ch.wisv.choice.exam.service
 
+import ch.wisv.choice.course.model.Course
 import ch.wisv.choice.exam.model.Exam
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ExamRepository : JpaRepository<Exam, Long> {
 
-    fun findAllByCourse_Code(code: String): List<Exam>
+    fun findAllByCourse(course: Course): List<Exam>
 
-    fun deleteAllByCourse_Code(code: String)
+    fun deleteAllByCourse(course: Course)
 }

@@ -52,9 +52,9 @@ class ApplicationTest {
             val course21 = Course("TI0021", "Test Course 2")
             courseService.createCourse(course21)
 
-            val exam1 = Exam(null, course11, LocalDate.now().plusWeeks(1), "Tentamen")
+            val exam1 = Exam(1, course11, LocalDate.now().plusWeeks(1), false, "Tentamen")
             examService.createExam(exam1)
-            val exam2 = Exam(null, course12, LocalDate.now().plusWeeks(2), "Hertentamen")
+            val exam2 = Exam(2, course21, LocalDate.now().plusWeeks(2), false, "Hertentamen")
             examService.createExam(exam2)
 
             val file = File("src/test/resources/TI1300 - Tentamen.pdf")

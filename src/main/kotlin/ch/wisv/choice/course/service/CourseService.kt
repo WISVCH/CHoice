@@ -44,7 +44,7 @@ interface CourseService {
      *
      * @return Course?
      */
-    fun getCourseByCourseCode(courseCode: String): Course?
+    fun getCourseByCourseCode(courseCode: String): Course
 
     /**
      * Get the Course predecessor by Course Code.
@@ -61,5 +61,12 @@ interface CourseService {
      * @param courseCode: String
      */
     fun deleteCourseCode(courseCode: String)
+
+    /**
+     * Delete a given course.
+     *
+     * @param course: Course
+     */
+    fun deleteCourse(course: Course)
 
 }
