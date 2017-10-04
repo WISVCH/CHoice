@@ -37,7 +37,7 @@ class DocumentController(val documentService: DocumentService) {
      */
     @GetMapping
     fun getDocumentsMetadata(): ResponseEntity<*>
-            = createResponseEntity(HttpStatus.OK, "List of all the document metatadata", documentService.getDocumentsMetadata())
+            = createResponseEntity(HttpStatus.OK, "List of all the document metadata", documentService.getDocumentsMetadata())
 
     /**
      * Show document ByteArray as application/pdf
