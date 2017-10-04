@@ -15,34 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.wisv.choice.service
+package ch.wisv.choice.dashboard
 
-import org.junit.Test
+import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 
-class ExamServiceTest {
-    @Test
-    fun createExam() {
+@Controller
+@RequestMapping("/dashboard")
+class DashboardController {
 
+    /**
+     * Dashboard index
+     */
+    @GetMapping
+    fun index(model: Model): String {
+        return "dashboard/index"
     }
-
-    @Test
-    fun getExams() {
-    }
-
-    @Test
-    fun getExamsByCourse() {
-    }
-
-    @Test
-    fun getExamById() {
-    }
-
-    @Test
-    fun deleteExam() {
-    }
-
-    @Test
-    fun deleteExamsByCourse() {
-    }
-
 }

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2016  W.I.S.V. 'Christiaan Huygens'
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" th:href="@{../../favicon.ico}">
+
+    <title>CHoice - Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/webjars/org.webjars.bower/wisvch-bootstrap-theme/0.0.3/dist/css/bootstrap.min.css"
+          th:href="@{/webjars/wisvch-bootstrap-theme/0.0.3/dist/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}">
+
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <div th:replace="fragments/header :: header">
+                <nav class="navbar navbar-inverse navbar-fixed-top"></nav>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h1>List of exams
+                    <a class="btn btn-primary btn-dashboard-header" href="create/">
+                        <i class="fa fa-fw fa-plus"></i> add new
+                    </a>
+                </h1>
+            </div>
+
+            <div th:replace="fragments/notification :: messages"></div>
+
+            <!--/*@thymesVar id="exam" type="ch.wisv.choice.exam.model.Exam"*/-->
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Exam</th>
+                    <th class="text-center">Answers</th>
+                    <th class="text-center">Document</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="exam : ${exams}">
+                    <td th:text="${exam.getCourse().getCode()} + ' ' + ${exam.getCourse().getName()}"></td>
+                    <td th:text="${exam.getName()} + ' ' + ${exam.getDate()}"></td>
+                    <td>
+                        <i class="fa fa-2x" th:classappend="${exam.includingAnswers ? 'fa-check text-success' : 'fa-ban text-danger'}"></i>
+                    </td>
+                    <td>
+                        <a target="_blank" class="btn btn-info" th:href="@{'/api/v1/document/exam/' + ${exam.getId()}}">
+                            <i class="fa fa-file-o"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="...">
+                            <a href="#" class="btn btn-danger delete-btn">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.12/datatables.min.js"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("table").DataTable({
+            pageLength: 100,
+            columnDefs: [
+                {
+                    targets: [2, 3, 4],
+                    width: "50px"
+                },
+                {
+                    targets: [0],
+                    visible: false
+                }
+            ],
+            drawCallback: function (settings) {
+                var api = this.api();
+                var rows = api.rows({page: 'current'}).nodes();
+                var last = null;
+
+                api.column(0, {page: 'current'}).data().each(function (group, i) {
+                    if (last !== group) {
+                        $(rows).eq(i).before(
+                            '<tr class="group active"><td colspan="4">' + group + '</td></tr>'
+                        );
+                        last = group;
+                    }
+                });
+            }
+        });
+
+        $(".delete-btn").on('click', function (e) {
+            e.preventDefault();
+
+            $("#deleteCourse").submit();
+        });
+    })
+</script>
+</body>
+</html>

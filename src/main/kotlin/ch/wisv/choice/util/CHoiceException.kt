@@ -15,34 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.wisv.choice.service
+package ch.wisv.choice.util
 
-import org.junit.Test
-
-class ExamServiceTest {
-    @Test
-    fun createExam() {
-
-    }
-
-    @Test
-    fun getExams() {
-    }
-
-    @Test
-    fun getExamsByCourse() {
-    }
-
-    @Test
-    fun getExamById() {
-    }
-
-    @Test
-    fun deleteExam() {
-    }
-
-    @Test
-    fun deleteExamsByCourse() {
-    }
-
-}
+class CHoiceException(message: String?) : RuntimeException(message)
