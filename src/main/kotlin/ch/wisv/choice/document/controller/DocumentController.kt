@@ -17,29 +17,18 @@
 
 package ch.wisv.choice.document.controller
 
-import ch.wisv.choice.document.model.Document
-import ch.wisv.choice.document.model.DocumentDTO
 import ch.wisv.choice.document.service.DocumentService
-import ch.wisv.choice.exam.service.ExamService
+import ch.wisv.choice.util.CHoiceException
+import ch.wisv.choice.util.ResponseEntityBuilder.Companion.createResponseEntity
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/api/v1/document")
 class DocumentController(val documentService: DocumentService) {
-
-    /**
-     * Create a new document from MultipartFile and DocumentDTO
-     *
-     * @param file: MultipartFile
-     * @param dto: DocumentDTO
-     *
-     * return Document
-     */
-    @PostMapping
-    fun createDocument(@RequestParam("file") file: MultipartFile, @RequestParam("dto") dto: DocumentDTO): Document
-            = documentService.storeDocument(file, dto)
 
     /**
      * Get list of Document metadata
@@ -47,8 +36,8 @@ class DocumentController(val documentService: DocumentService) {
      * @return Collection<Document>
      */
     @GetMapping
-    fun getDocumentsMetadata(): Collection<Document>
-            = documentService.getDocumentsMetadata()
+    fun getDocumentsMetadata(): ResponseEntity<*>
+            = createResponseEntity(HttpStatus.OK, "List of all the document metatadata", documentService.getDocumentsMetadata())
 
     /**
      * Show document ByteArray as application/pdf
@@ -57,8 +46,14 @@ class DocumentController(val documentService: DocumentService) {
      */
     @ResponseBody
     @GetMapping("/{documentId}", produces = arrayOf(MediaType.APPLICATION_PDF_VALUE))
-    fun getDocumentById(@PathVariable documentId: Long): ByteArray
-            = documentService.getDocumentBytesById(documentId)
+    fun getDocumentById(@PathVariable documentId: Long, response: HttpServletResponse): ByteArray {
+        return try {
+            documentService.getDocumentBytesById(documentId)
+        } catch (e: CHoiceException) {
+            response.status = org.apache.http.HttpStatus.SC_NOT_FOUND
+            ByteArray(0)
+        }
+    }
 
     /**
      * Show document ByteArray as application/pdf
@@ -67,6 +62,12 @@ class DocumentController(val documentService: DocumentService) {
      */
     @ResponseBody
     @GetMapping("/exam/{examId}", produces = arrayOf(MediaType.APPLICATION_PDF_VALUE))
-    fun getDocumentByExamId(@PathVariable examId: Long)
-        = documentService.getDocumentBytesByExamId(examId)
+    fun getDocumentByExamId(@PathVariable examId: Long, response: HttpServletResponse): ByteArray {
+        return try {
+            documentService.getDocumentBytesByExamId(examId)
+        } catch (e: CHoiceException) {
+            response.status = org.apache.http.HttpStatus.SC_NOT_FOUND
+            ByteArray(0)
+        }
+    }
 }

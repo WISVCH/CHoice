@@ -25,5 +25,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface DocumentRepository : JpaRepository<Document, Long> {
 
-    fun findByExam(exam: Exam): Document
+    fun findByExam(exam: Exam): Document?
 }

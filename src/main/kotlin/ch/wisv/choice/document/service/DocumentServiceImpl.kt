@@ -21,6 +21,7 @@ import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.document.model.Document
 import ch.wisv.choice.document.model.DocumentDTO
 import ch.wisv.choice.exam.service.ExamService
+import ch.wisv.choice.util.CHoiceException
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -45,12 +46,16 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
         return documents
     }
 
-    override fun getDocumentBytesById(id: Long): ByteArray
-            = documentRepository.findOne(id).bytes
+    override fun getDocumentBytesById(id: Long): ByteArray {
+        val document = documentRepository.findOne(id) ?: throw CHoiceException("Document with id $id does not exists!")
+
+        return document.bytes
+    }
 
     override fun getDocumentBytesByExamId(id: Long): ByteArray {
         val exam = examService.getExamById(id)
+        val document = documentRepository.findByExam(exam) ?: throw CHoiceException("Document with id $id does not exists!")
 
-        return documentRepository.findByExam(exam).bytes
+        return document.bytes
     }
 }

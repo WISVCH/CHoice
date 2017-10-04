@@ -64,7 +64,7 @@ class ApplicationTest {
             documentService.storeDocument(document)
 
             val file2 = File("src/test/resources/TI1300 - Antwoorden.pdf")
-            val document2 = Document(null, file2.readBytes(), "Antwoorden", exam2)
+            val document2 = Document(null, file2.readBytes(), "Antwoorden", exam1)
             documentService.storeDocument(document2)
         }
     }
