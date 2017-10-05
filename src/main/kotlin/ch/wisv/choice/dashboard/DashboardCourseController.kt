@@ -106,4 +106,21 @@ class DashboardCourseController(val courseService: CourseService) {
             "redirect:/dashboard/courses/create/"
         }
     }
+
+    /**
+     * DELETE exam delete.
+     */
+    @GetMapping("/delete/{courseCode}/")
+    fun delete(redirect: RedirectAttributes, @PathVariable("courseCode") courseCode: String): String {
+        return try {
+            courseService.deleteCourseCode(courseCode)
+            redirect.addFlashAttribute("message", "Course $courseCode successfully deleted!")
+
+            "redirect:/dashboard/courses/"
+        } catch (e: CHoiceException) {
+            redirect.addFlashAttribute("error", e.message)
+
+            "redirect:/dashboard/courses/"
+        }
+    }
 }

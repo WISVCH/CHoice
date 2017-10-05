@@ -19,6 +19,7 @@ package ch.wisv.choice.document.service
 
 import ch.wisv.choice.document.model.Document
 import ch.wisv.choice.document.model.DocumentDTO
+import ch.wisv.choice.exam.model.Exam
 import org.springframework.web.multipart.MultipartFile
 
 interface DocumentService {
@@ -31,5 +32,9 @@ interface DocumentService {
 
     fun getDocumentBytesById(id: Long): ByteArray
 
+    fun getDocumentByExamId(id: Long): Document
+
     fun getDocumentBytesByExamId(id: Long): ByteArray
+
+    fun deleteDocumentByExamId(id: Long)
 }

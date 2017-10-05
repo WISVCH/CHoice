@@ -80,10 +80,20 @@ class DashboardExamController(val examService: ExamService,
     /**
      * DELETE exam delete.
      */
-    @DeleteMapping("/delete/")
-    fun delete(redirect: RedirectAttributes, @RequestParam("courseId") courseId: String ): String {
-        redirect.addFlashAttribute("message", "Course $courseId successfully deleted!")
+    @GetMapping("/delete/{examId}/")
+    fun delete(redirect: RedirectAttributes, @PathVariable("examId") examId: String): String {
+        return try {
+            val exam = examService.getExamById(examId.toLong())
+            documentService.deleteDocumentByExamId(examId.toLong())
+            examService.deleteExam(exam)
 
-        return "redirect:/dashboard/exams/"
+            redirect.addFlashAttribute("message", "Exam $examId successfully deleted!")
+
+            "redirect:/dashboard/exams/"
+        } catch (e: CHoiceException) {
+            redirect.addFlashAttribute("error", e.message)
+
+            "redirect:/dashboard/exams/"
+        }
     }
 }
