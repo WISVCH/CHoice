@@ -98,6 +98,24 @@ class CourseServiceImpl(val courseRepository: CourseRepository, val examReposito
     }
 
     /**
+     * Update a Course.
+     *
+     * @param course: Course
+     */
+    override fun updateCourse(course: Course) {
+        val tempCourse = getCourseByCourseCode(course.code)
+
+        tempCourse.name = course.name
+        tempCourse.predecessor = course.predecessor
+        tempCourse.study = course.study
+        tempCourse.studyProgram = course.studyProgram
+
+        assertIsValid(tempCourse)
+
+        courseRepository.saveAndFlush(tempCourse)
+    }
+
+    /**
      * Assert if the course given a valid Course
      */
     fun assertIsValid(course: Course) {

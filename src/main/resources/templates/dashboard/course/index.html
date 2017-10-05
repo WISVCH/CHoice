@@ -87,6 +87,9 @@
                     <td th:text="${course.getStudyProgram()}"></td>
                     <td>
                         <div class="btn-group" role="group" aria-label="...">
+                            <a th:href="'edit/' + ${course.getCode()} + '/'" class="btn btn-info">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </a>
                             <a th:href="'delete/'" class="btn btn-danger">
                                 <i class="glyphicon glyphicon-remove"></i>
                             </a>
@@ -112,7 +115,7 @@
             columnDefs: [
                 {
                     targets: [5],
-                    width: "50px"
+                    width: "100px"
                 }
             ]
         });

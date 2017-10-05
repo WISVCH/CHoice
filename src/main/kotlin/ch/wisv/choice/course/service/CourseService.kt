@@ -69,4 +69,11 @@ interface CourseService {
      */
     fun deleteCourse(course: Course)
 
+    /**
+     * Update a Course.
+     *
+     * @param course: Course
+     */
+    fun updateCourse(course: Course)
+
 }
