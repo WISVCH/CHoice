@@ -15,22 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.wisv.choice.dashboard
+package ch.wisv.choice.document.model
 
-import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 
-@Controller
-@RequestMapping("/dashboard")
-class DashboardController {
 
-    /**
-     * Dashboard index
-     */
-    @GetMapping("/")
-    fun index(model: Model): String {
-        return "dashboard/index"
-    }
-}
+@Entity
+data class File(
+        @Id
+        @GeneratedValue
+        var id: Long?,
+
+        @Column(columnDefinition = "bytea")
+        var bytes: ByteArray
+)
