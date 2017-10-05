@@ -25,9 +25,8 @@ import javax.persistence.Id
 
 @Entity
 data class File(
-        @Id
-        @GeneratedValue
-        var id: Long?,
+
+        @GeneratedValue @Id var id: Long?,
 
         @Column(columnDefinition = "bytea")
         var bytes: ByteArray

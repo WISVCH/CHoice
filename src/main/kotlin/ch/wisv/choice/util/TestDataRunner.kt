@@ -22,8 +22,8 @@ import ch.wisv.choice.course.model.Study
 import ch.wisv.choice.course.model.StudyProgram
 import ch.wisv.choice.course.service.CourseRepository
 import ch.wisv.choice.document.model.Document
-import ch.wisv.choice.document.model.File
 import ch.wisv.choice.document.service.DocumentRepository
+import ch.wisv.choice.document.service.FileRepository
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.exam.service.ExamRepository
 import org.springframework.boot.CommandLineRunner
@@ -34,6 +34,7 @@ import java.time.LocalDate
 @Component
 @Profile("dev")
 class TestDataRunner(val courseRepository: CourseRepository,
+                     val fileRepository: FileRepository,
                      val documentRepository: DocumentRepository,
                      val examRepository: ExamRepository) : CommandLineRunner {
 
@@ -58,13 +59,10 @@ class TestDataRunner(val courseRepository: CourseRepository,
         val exam = Exam(1, course, LocalDate.now(), false, "Exam")
         examRepository.saveAndFlush(exam)
 
-        val document = Document(1, File(1, ByteArray(0)), "TI1505 Exam July 8, 2017", exam)
+        val document = Document(1, null, "TI1505 Exam July 8, 2017", exam)
         documentRepository.saveAndFlush(document)
 
         val exam2 = Exam(2, predecessor, LocalDate.now(), true, "Exam")
         examRepository.saveAndFlush(exam2)
-
-//        val document2 = Document(2, ByteArray(0), "TI1500 Exam July 8, 2016", exam2)
-//        documentRepository.saveAndFlush(document2)
     }
 }

@@ -24,8 +24,8 @@ import javax.persistence.*
 data class Document(
         @GeneratedValue @Id val id: Long? = null,
 
-        @OneToOne(cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY)
-        var file: File,
+        @OneToOne(cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY, targetEntity = File::class)
+        var file: File?,
 
         var name: String,
 

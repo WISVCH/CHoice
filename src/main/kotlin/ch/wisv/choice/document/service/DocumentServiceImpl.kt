@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @Service
 class DocumentServiceImpl(val documentRepository: DocumentRepository,
+                          val fileRepository: FileRepository,
                           val examService: ExamService) : DocumentService {
     override fun storeDocument(file: MultipartFile, dto: DocumentDTO): Document {
         val document = Document(file = File(null, file.bytes), name = dto.name, exam = dto.exam)
@@ -34,7 +35,13 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
         return storeDocument(document)
     }
 
-    override fun storeDocument(document: Document): Document = documentRepository.saveAndFlush(document)
+    override fun storeDocument(document: Document): Document {
+        if (document.file != null) {
+            fileRepository.saveAndFlush(document.file)
+        }
+
+        return documentRepository.saveAndFlush(document)
+    }
 
     override fun getDocumentsMetadata(): Collection<Document> {
         val documents = documentRepository.findAll()
@@ -45,14 +52,16 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
 
     override fun getDocumentBytesById(id: Long): ByteArray {
         val document = documentRepository.findOne(id) ?: throw CHoiceException("Document with id $id does not exists!")
+        document.file ?: throw CHoiceException("No file added to this document!")
 
-        return document.file.bytes
+        return document.file!!.bytes
     }
 
     override fun getDocumentBytesByExamId(id: Long): ByteArray {
         val exam = examService.getExamById(id)
         val document = documentRepository.findByExam(exam) ?: throw CHoiceException("Document with id $id does not exists!")
+        document.file ?: throw CHoiceException("No file added to this document!")
 
-        return document.file.bytes
+        return document.file!!.bytes
     }
 }
