@@ -9,3 +9,4 @@ out/
 
 .DS_Store
 config/oidc-client-registration.json
+config/application-dev.yml
