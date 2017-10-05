@@ -58,10 +58,24 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
     }
 
     override fun getDocumentBytesByExamId(id: Long): ByteArray {
-        val exam = examService.getExamById(id)
-        val document = documentRepository.findByExam(exam) ?: throw CHoiceException("Document with id $id does not exists!")
+        val document = getDocumentByExamId(id)
         document.file ?: throw CHoiceException("No file added to this document!")
 
         return document.file!!.bytes
+    }
+
+    override fun getDocumentByExamId(id: Long): Document {
+        val exam = examService.getExamById(id)
+
+        return documentRepository.findByExam(exam) ?: throw CHoiceException("Document with id $id does not exists!")
+    }
+
+    override fun deleteDocumentByExamId(id: Long) {
+        val document = getDocumentByExamId(id)
+        if (document.file != null) {
+            fileRepository.delete(document.file)
+        }
+
+        documentRepository.delete(document)
     }
 }

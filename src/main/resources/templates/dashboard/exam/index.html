@@ -82,7 +82,8 @@
                     <td th:text="${exam.getCourse().getCode()} + ' ' + ${exam.getCourse().getName()}"></td>
                     <td th:text="${exam.getName()} + ' ' + ${exam.getDate()}"></td>
                     <td>
-                        <i class="fa fa-2x" th:classappend="${exam.includingAnswers ? 'fa-check text-success' : 'fa-ban text-danger'}"></i>
+                        <i class="fa fa-2x"
+                           th:classappend="${exam.includingAnswers ? 'fa-check text-success' : 'fa-ban text-danger'}"></i>
                     </td>
                     <td>
                         <a target="_blank" class="btn btn-info" th:href="@{'/api/v1/document/exam/' + ${exam.getId()}}">
@@ -91,7 +92,7 @@
                     </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="...">
-                            <a href="#" class="btn btn-danger delete-btn">
+                            <a th:href="'delete/' + ${exam.getId()} + '/'" class="btn btn-danger">
                                 <i class="glyphicon glyphicon-remove"></i>
                             </a>
                         </div>
@@ -137,12 +138,6 @@
                     }
                 });
             }
-        });
-
-        $(".delete-btn").on('click', function (e) {
-            e.preventDefault();
-
-            $("#deleteCourse").submit();
         });
     })
 </script>
