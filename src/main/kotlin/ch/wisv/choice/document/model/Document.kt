@@ -20,13 +20,14 @@ package ch.wisv.choice.document.model
 import ch.wisv.choice.exam.model.Exam
 import javax.persistence.*
 
-
 @Entity
 data class Document(
         @GeneratedValue @Id val id: Long? = null,
 
-        @Lob var bytes: ByteArray,
+        @OneToOne(cascade = arrayOf(CascadeType.ALL), fetch = FetchType.LAZY, targetEntity = File::class)
+        var file: File?,
 
         var name: String,
 
-        @OneToOne(targetEntity = Exam::class) var exam: Exam)
+        @OneToOne(targetEntity = Exam::class) var exam: Exam
+)

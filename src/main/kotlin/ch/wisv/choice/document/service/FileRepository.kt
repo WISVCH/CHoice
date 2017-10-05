@@ -15,22 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.wisv.choice.dashboard
+package ch.wisv.choice.document.service
 
-import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import ch.wisv.choice.document.model.File
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
-@Controller
-@RequestMapping("/dashboard")
-class DashboardController {
-
-    /**
-     * Dashboard index
-     */
-    @GetMapping("/")
-    fun index(model: Model): String {
-        return "dashboard/index"
-    }
-}
+@Repository
+interface FileRepository : JpaRepository<File, Long>

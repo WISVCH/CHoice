@@ -30,7 +30,6 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.stereotype.Component
 import org.springframework.test.context.ActiveProfiles
-import java.io.File
 import java.time.LocalDate
 
 @SpringBootApplication
@@ -59,12 +58,11 @@ class ApplicationTest {
             val exam2 = Exam(2, course21, LocalDate.now().plusWeeks(2), false, "Hertentamen")
             examService.createExam(exam2)
 
-            val file = File("src/test/resources/TI1300 - Tentamen.pdf")
-            val document = Document(null, file.readBytes(), "Tentamen", exam1)
+            val document = Document(null, null, "Tentamen", exam1)
             documentService.storeDocument(document)
 
-            val file2 = File("src/test/resources/TI1300 - Antwoorden.pdf")
-            val document2 = Document(null, file2.readBytes(), "Antwoorden", exam1)
+            val file2 = java.io.File("src/test/resources/TI1300 - Antwoorden.pdf")
+            val document2 = Document(null, null, "Antwoorden", exam1)
             documentService.storeDocument(document2)
         }
     }
