@@ -22,10 +22,7 @@ import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.util.CHoiceException
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
 @Controller
@@ -51,9 +48,9 @@ class DashboardCourseController(val courseService: CourseService) {
             model.addAttribute("course", Course())
         }
 
-        model.addAttribute("courses", courseService.getAllCourses());
+        model.addAttribute("courses", courseService.getAllCourses())
 
-        return "dashboard/course/create"
+        return "dashboard/course/course"
     }
 
     /**
@@ -63,6 +60,43 @@ class DashboardCourseController(val courseService: CourseService) {
     fun create(redirect: RedirectAttributes, @ModelAttribute model: Course): String {
         return try {
             courseService.createCourse(model)
+
+            "redirect:/dashboard/courses/"
+        } catch (e: CHoiceException) {
+            redirect.addFlashAttribute("error", e.message)
+            redirect.addFlashAttribute("course", model)
+
+            "redirect:/dashboard/courses/create/"
+        }
+    }
+
+    /**
+     * Dashboard course create.
+     */
+    @GetMapping("/edit/{courseCode}/")
+    fun edit(model: Model, redirect: RedirectAttributes, @PathVariable courseCode: String): String {
+        return try {
+            if (!model.containsAttribute("course")) {
+                model.addAttribute("course", courseService.getCourseByCourseCode(courseCode))
+            }
+
+            model.addAttribute("courses", courseService.getAllCourses())
+
+            "dashboard/course/course"
+        } catch (e: CHoiceException) {
+            redirect.addFlashAttribute("error", e.message!!)
+
+            "redirect:/courses/"
+        }
+    }
+
+    /**
+     * POST course create.
+     */
+    @PostMapping("/edit/{courseCode}/")
+    fun edit(redirect: RedirectAttributes, @ModelAttribute model: Course): String {
+        return try {
+            courseService.updateCourse(model)
 
             "redirect:/dashboard/courses/"
         } catch (e: CHoiceException) {
