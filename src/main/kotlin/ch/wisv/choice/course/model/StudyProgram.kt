@@ -15,34 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.wisv.choice.service
+package ch.wisv.choice.course.model
 
-import org.junit.Test
+enum class StudyProgram {
 
-class ExamServiceTest {
-    @Test
-    fun createExam() {
-
-    }
-
-    @Test
-    fun getExams() {
-    }
-
-    @Test
-    fun getExamsByCourse() {
-    }
-
-    @Test
-    fun getExamById() {
-    }
-
-    @Test
-    fun deleteExam() {
-    }
-
-    @Test
-    fun deleteExamsByCourse() {
-    }
-
+    FIRST_YEAR,
+    SECOND_YEAR,
+    THIRD_YEAR,
+    MASTER
 }

@@ -5,7 +5,7 @@ language: java
 jdk:
 - oraclejdk8
 script:
-- "./gradlew build"
+- "./gradlew clean build -PbuildNumber=$TRAVIS_BUILD_NUMBER --scan"
 - docker build --no-cache --pull -t wisvch/choice:$TRAVIS_BUILD_NUMBER .
 after_success:
 - if [ "${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}" == "master" ]; then

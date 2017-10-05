@@ -1,5 +1,12 @@
 .idea
 .gradle/
+
+
 build/
 out/
+
 *.iml
+
+.DS_Store
+config/oidc-client-registration.json
+config/application-dev.yml

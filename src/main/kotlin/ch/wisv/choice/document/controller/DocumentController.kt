@@ -1,48 +1,73 @@
+/*
+ * Copyright (c) 2016  W.I.S.V. 'Christiaan Huygens'
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package ch.wisv.choice.document.controller
 
-import ch.wisv.choice.document.model.Document
-import ch.wisv.choice.document.model.DocumentDTO
 import ch.wisv.choice.document.service.DocumentService
-import org.springframework.beans.factory.annotation.Autowired
+import ch.wisv.choice.util.CHoiceException
+import ch.wisv.choice.util.ResponseEntityBuilder.Companion.createResponseEntity
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
+import javax.servlet.http.HttpServletResponse
 
 @RestController
-@RequestMapping("/document")
-class DocumentController
+@RequestMapping("/api/v1/document")
+class DocumentController(val documentService: DocumentService) {
 
-    @Autowired
-    constructor(@Autowired val documentService: DocumentService) {
-
-    @PostMapping
-    fun createDocument(@RequestParam("file") file: MultipartFile, @RequestParam("dto") dto: DocumentDTO)
-            = documentService.storeDocument(file, dto)
-
+    /**
+     * Get list of Document metadata
+     *
+     * @return Collection<Document>
+     */
     @GetMapping
-    fun getDocumentsMetadata(): Collection<Document>
-            = documentService.getDocumentsMetadata()
+    fun getDocumentsMetadata(): ResponseEntity<*>
+            = createResponseEntity(HttpStatus.OK, "List of all the document metadata", documentService.getDocumentsMetadata())
 
-    @GetMapping("/exam/{examId}")
-    fun getDocumentsMetadataByExam(@PathVariable examId: Long): Collection<Document>
-            = documentService.getDocumentsMetadataByExam(examId)
+    /**
+     * Show document ByteArray as application/pdf
+     *
+     * @return ByteArray
+     */
+    @ResponseBody
+    @GetMapping("/{documentId}", produces = arrayOf(MediaType.APPLICATION_PDF_VALUE))
+    fun getDocumentById(@PathVariable documentId: Long, response: HttpServletResponse): ByteArray {
+        return try {
+            documentService.getDocumentBytesById(documentId)
+        } catch (e: CHoiceException) {
+            response.status = org.apache.http.HttpStatus.SC_NOT_FOUND
+            ByteArray(0)
+        }
+    }
 
-    @GetMapping("/course/{code}")
-    fun getDocumentsMetadataByCourseCode(@PathVariable code: String): Collection<Document>
-            = documentService.getDocumentsMetadataByCourseCode(code)
-
-    @GetMapping("/{documentId}")
-    fun getDocumentById(@PathVariable examId: Long, @PathVariable documentId: Long): ByteArray
-            = documentService.getDocumentBytesById(documentId)
-
-    @DeleteMapping("/{documentId}")
-    fun deleteDocument(@PathVariable documentId: Long)
-            = documentService.deleteDocument(documentId)
-
-    @DeleteMapping("/exam/{examId}")
-    fun deleteDocumentsByExamId(@PathVariable examId: Long)
-            = documentService.deleteDocumentsByExam(examId)
-
-    @DeleteMapping("/course/{courseCode}")
-    fun deleteDocumentsByCourseCode(@PathVariable code: String)
-            = documentService.deleteDocumentsByCourse(code)
+    /**
+     * Show document ByteArray as application/pdf
+     *
+     * @return ByteArray
+     */
+    @ResponseBody
+    @GetMapping("/exam/{examId}", produces = arrayOf(MediaType.APPLICATION_PDF_VALUE))
+    fun getDocumentByExamId(@PathVariable examId: Long, response: HttpServletResponse): ByteArray {
+        return try {
+            documentService.getDocumentBytesByExamId(examId)
+        } catch (e: CHoiceException) {
+            response.status = org.apache.http.HttpStatus.SC_NOT_FOUND
+            ByteArray(0)
+        }
+    }
 }

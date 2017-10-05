@@ -15,34 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.wisv.choice.service
+package ch.wisv.choice.document.service
 
-import org.junit.Test
+import ch.wisv.choice.document.model.File
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
-class ExamServiceTest {
-    @Test
-    fun createExam() {
-
-    }
-
-    @Test
-    fun getExams() {
-    }
-
-    @Test
-    fun getExamsByCourse() {
-    }
-
-    @Test
-    fun getExamById() {
-    }
-
-    @Test
-    fun deleteExam() {
-    }
-
-    @Test
-    fun deleteExamsByCourse() {
-    }
-
-}
+@Repository
+interface FileRepository : JpaRepository<File, Long>

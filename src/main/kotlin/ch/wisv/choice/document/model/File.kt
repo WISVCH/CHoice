@@ -15,34 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package ch.wisv.choice.service
+package ch.wisv.choice.document.model
 
-import org.junit.Test
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 
-class ExamServiceTest {
-    @Test
-    fun createExam() {
 
-    }
+@Entity
+data class File(
 
-    @Test
-    fun getExams() {
-    }
+        @GeneratedValue @Id var id: Long?,
 
-    @Test
-    fun getExamsByCourse() {
-    }
-
-    @Test
-    fun getExamById() {
-    }
-
-    @Test
-    fun deleteExam() {
-    }
-
-    @Test
-    fun deleteExamsByCourse() {
-    }
-
-}
+        @Column(columnDefinition = "bytea")
+        var bytes: ByteArray
+)

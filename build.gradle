@@ -1,7 +1,24 @@
+/*
+ * Copyright (c) 2016  W.I.S.V. 'Christiaan Huygens'
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 buildscript {
     ext {
-        kotlinVersion = '1.1.4-2'
         springBootVersion = '1.5.7.RELEASE'
+        kotlinVersion = '1.1.51'
     }
     repositories {
         mavenCentral()
@@ -48,16 +65,35 @@ compileTestKotlin {
 
 repositories {
     mavenCentral()
+    maven { url "http://dl.bintray.com/wisvch/maven" }
 }
 
-
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
-    compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile("io.rest-assured:rest-assured:3.0.2")
-    runtime('org.postgresql:postgresql')
-    runtime("org.hsqldb:hsqldb")
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'org.springframework.boot:spring-boot-configuration-processor'
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}"
+    compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
+
+    compile 'org.thymeleaf:thymeleaf-spring4:3.0.0.RELEASE'
+    compile 'org.thymeleaf:thymeleaf:3.0.0.RELEASE'
+    compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.0.RELEASE'
+
+    compile('ch.wisv:wisvch-connect-client:1.2.6.0') {
+        // Workaround for https://github.com/mitreid-connect/OpenID-Connect-Java-Spring-Server/pull/1084
+        exclude module: 'bcprov-jdk15on'
+    }
+    compile 'org.bouncycastle:bcprov-jdk15on:1.52+'
+
+    compile 'org.webjars:bootstrap:3.3.7-1'
+    compile 'org.webjars.bower:wisvch-bootstrap-theme:0.0.3'
+    compile 'org.webjars:font-awesome:4.7.0'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile "io.rest-assured:rest-assured:3.0.2"
+
+    runtime 'org.postgresql:postgresql'
+    runtime "org.hsqldb:hsqldb"
 }
