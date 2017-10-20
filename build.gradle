@@ -90,6 +90,7 @@ dependencies {
     compile 'org.webjars:bootstrap:3.3.7-1'
     compile 'org.webjars.bower:wisvch-bootstrap-theme:0.0.3'
     compile 'org.webjars:font-awesome:4.7.0'
+    compile 'org.webjars.npm:flatpickr:3.0.6'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile "io.rest-assured:rest-assured:3.0.2"

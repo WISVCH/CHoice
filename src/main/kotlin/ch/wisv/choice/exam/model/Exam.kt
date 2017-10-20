@@ -18,6 +18,7 @@
 package ch.wisv.choice.exam.model
 
 import ch.wisv.choice.course.model.Course
+import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 import javax.persistence.*
 
