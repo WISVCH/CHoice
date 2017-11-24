@@ -72,13 +72,13 @@
                         <div class="form-group">
                             <label class="control-label">Course</label>
 
-                            <input type="text" class="form-control awesomplete" list="courses" th:field="*{course}"
+                            <input type="text" class="form-control" th:field="*{course}"
                                    placeholder="Type the course code or name" required autocomplete="off"/>
                             <!--/*@thymesVar id="course" type="ch.wisv.choice.course.model.Course"*/-->
-                            <datalist id="courses">
+                            <!-- <datalist id="courses">
                                 <option th:each="course : ${courses}" th:value="${course.getCode()}"
                                         th:text="${course.getCode()} + ' - ' + ${course.getName()}"></option>
-                            </datalist>
+                            </datalist> -->
 
                             <span class="help-block">Start typing to search for a course.</span>
                         </div>
@@ -128,7 +128,7 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 <script th:src="@{/webjars/flatpickr/3.0.6/src/flatpickr.js}"></script>
-<script th:src="@{/js/autocomplete.js}"></script>
+<!-- <script th:src="@{/js/autocomplete.js}"></script> -->
 <script>
     $('#file').on('change', function () {
         if ($(this).get(0).files.length > 0) { // only if a file is selected
@@ -141,12 +141,12 @@
         }
     });
 
-    $('#date').flatpickr({
-        enableTime: false,
-        altInput: true,
-        altFormat: 'F j, Y',
-        dateFormat: "m/d/y"
-    });
+    // $('#date').flatpickr({
+    //     enableTime: false,
+    //     altInput: true,
+    //     altFormat: 'F j, Y',
+    //     dateFormat: "m/d/y"
+    // });
 </script>
 </body>
 </html>
