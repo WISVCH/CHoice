@@ -59,7 +59,6 @@ class ExamController(val examService: ExamService,
         } catch (e: CHoiceException) {
             createResponseEntity(HttpStatus.NOT_FOUND, e.message!!)
         }
-
     }
 
     @GetMapping("/{examId}")
