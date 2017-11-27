@@ -28,12 +28,12 @@ spring:
 
 server:
   port: 8080
-  context-path: /choice
+  context-path: /choice2
 
 security.basic.enabled: false
 
 wisvch:
   connect:
     issuerUri: https://connect.ch.tudelft.nl/
-    clientUri: http://localhost:8080/choice
+    clientUri: http://localhost:8080/choice2
     admin-groups: <ldap-group>

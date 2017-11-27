@@ -18,9 +18,12 @@
 package ch.wisv.choice.course.controller
 
 import ch.wisv.choice.course.model.Course
+import ch.wisv.choice.course.model.CourseDTO
 import ch.wisv.choice.course.model.Study
 import ch.wisv.choice.course.model.StudyProgram
 import ch.wisv.choice.course.service.CourseService
+import ch.wisv.choice.exam.model.Exam
+import ch.wisv.choice.exam.service.ExamService
 import ch.wisv.choice.util.CHoiceException
 import ch.wisv.choice.util.ResponseEntityBuilder.Companion.createResponseEntity
 import org.springframework.http.HttpStatus
@@ -29,11 +32,12 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.stream.Collectors
 import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping("/api/v1/course")
-class CourseController(val courseService: CourseService) {
+class CourseController(val courseService: CourseService, val examService: ExamService) {
 
     /**
      * Get list of courses.
@@ -41,9 +45,8 @@ class CourseController(val courseService: CourseService) {
      * @return ResponseEntity<*>
      */
     @GetMapping
-    fun getAllCourses(): ResponseEntity<*> {
-        return createResponseEntity(HttpStatus.OK, "List of all courses", courseService.getAllCourses())
-    }
+    fun getAllCourses(): ResponseEntity<*> =
+            createResponseEntity(HttpStatus.OK, "List of all courses", courseService.getAllCourses())
 
     /**
      * Get list of all active courses.
@@ -55,7 +58,10 @@ class CourseController(val courseService: CourseService) {
         var courses = courseService.getAllCourses()
         courses = filterNoActiveCourses(courses)
 
-        return createResponseEntity(HttpStatus.OK, "List of all active courses", courses)
+        val coursesDTO = courses.stream().map { course -> CourseDTO(course, getPredecessorsExams(course)) }
+                .collect(Collectors.toList())
+
+        return createResponseEntity(HttpStatus.OK, "List of all active courses", coursesDTO)
     }
 
     /**
@@ -96,7 +102,10 @@ class CourseController(val courseService: CourseService) {
             }
         }
 
-        return createResponseEntity(HttpStatus.OK, "List of all courses that match the search query", courses)
+        val coursesDTO = courses.stream().map { course -> CourseDTO(course, getPredecessorsExams(course)) }
+                .collect(Collectors.toList())
+
+        return createResponseEntity(HttpStatus.OK, "List of all courses that match the search query", coursesDTO)
     }
 
     /**
@@ -152,5 +161,21 @@ class CourseController(val courseService: CourseService) {
         }
 
         return courses.filter { item -> !predecessorCourses.contains(item) }
+    }
+
+    private fun getPredecessorsExams(course: Course) = getPredecessorsExams(course, HashSet())
+
+    private fun getPredecessorsExams(course: Course?, exams: HashSet<Exam>): HashSet<Exam> {
+        if (course != null) {
+            val predecessorExams = examService.getExamsByCourse(course.code)
+            exams.addAll(predecessorExams)
+
+            if (course.predecessor != null) {
+                val predecessor = courseService.getCourseByCourseCode(course.predecessor!!)
+                getPredecessorsExams(predecessor, exams)
+            }
+        }
+
+        return exams
     }
 }
