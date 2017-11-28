@@ -26,12 +26,6 @@ import org.springframework.stereotype.Service
 class ExamServiceImpl(val examRepository: ExamRepository, val courseService: CourseService) : ExamService {
 
     override fun createExam(exam: Exam): Exam {
-        val filtered = getExamsByCourse(exam.course.code).filter { item -> item.name == exam.name && item.date == exam.date }
-
-        if (filtered.isNotEmpty()) {
-            throw CHoiceException("Already have a(n) " + exam.name + " of this course on date " + exam.date)
-        }
-
         return examRepository.saveAndFlush(exam)
     }
 
