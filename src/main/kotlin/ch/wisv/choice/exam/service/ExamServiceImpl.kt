@@ -25,9 +25,8 @@ import org.springframework.stereotype.Service
 @Service
 class ExamServiceImpl(val examRepository: ExamRepository, val courseService: CourseService) : ExamService {
 
-    override fun createExam(exam: Exam): Exam {
-        return examRepository.saveAndFlush(exam)
-    }
+    override fun createExam(exam: Exam): Exam 
+            = examRepository.saveAndFlush(exam)
 
     override fun getExams(): Collection<Exam>
             = examRepository.findAll()
