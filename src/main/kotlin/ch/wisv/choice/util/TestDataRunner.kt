@@ -44,7 +44,10 @@ class TestDataRunner(val courseRepository: CourseRepository,
      * @throws Exception on error
      */
     override fun run(vararg args: String?) {
-        val predecessor = Course("TI1500", "Web- en Databasetechnologie", null, Study.CS, StudyProgram.FIRST_YEAR)
+        val predecessor2 = Course("TI1605", "Web- en Databasetechnologie", null, Study.CS, StudyProgram.FIRST_YEAR)
+        courseRepository.saveAndFlush(predecessor2)
+
+        val predecessor = Course("TI1600", "Web- en Databasetechnologie", predecessor2.code, Study.CS, StudyProgram.FIRST_YEAR)
         courseRepository.saveAndFlush(predecessor)
 
         val course = Course("TI1505", "Web & Databasetechnologie", predecessor.code, Study.CS, StudyProgram.FIRST_YEAR)
@@ -64,5 +67,14 @@ class TestDataRunner(val courseRepository: CourseRepository,
 
         val exam2 = Exam(2, predecessor, LocalDate.now(), true, "Exam")
         examRepository.saveAndFlush(exam2)
+
+//        val document2 = Document(2, null, "TI600 Exam July 6, 2015", exam2)
+//        documentRepository.saveAndFlush(document2)
+
+        val exam3 = Exam(3, predecessor2, LocalDate.now(), true, "Exam")
+        examRepository.saveAndFlush(exam3)
+
+        val document3 = Document(3, null, "TI1605 Exam July 9, 2014", exam3)
+        documentRepository.saveAndFlush(document3)
     }
 }

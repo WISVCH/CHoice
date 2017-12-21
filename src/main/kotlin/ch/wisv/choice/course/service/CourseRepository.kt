@@ -22,4 +22,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface CourseRepository : JpaRepository<Course, String>
+interface CourseRepository : JpaRepository<Course, String> {
+
+    fun findAllByOrderByCodeAsc(): Collection<Course>
+}
+

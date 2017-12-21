@@ -31,7 +31,7 @@ class CourseServiceImpl(val courseRepository: CourseRepository, val examReposito
      * @return Collection<Course>
      */
     override fun getAllCourses(): Collection<Course>
-            = courseRepository.findAll()
+            = courseRepository.findAllByOrderByCodeAsc()
 
     /**
      * Create a new Course.
