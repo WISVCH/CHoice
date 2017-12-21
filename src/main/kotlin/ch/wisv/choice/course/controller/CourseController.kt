@@ -165,7 +165,7 @@ class CourseController(val courseService: CourseService, val examService: ExamSe
 
     private fun getPredecessorsExams(course: Course) = getPredecessorsExams(course, HashSet())
 
-    private fun getPredecessorsExams(course: Course?, exams: HashSet<Exam>): HashSet<Exam> {
+    private fun getPredecessorsExams(course: Course?, exams: HashSet<Exam>): Set<Exam> {
         if (course != null) {
             val predecessorExams = examService.getExamsByCourse(course.code)
             exams.addAll(predecessorExams)
@@ -176,6 +176,7 @@ class CourseController(val courseService: CourseService, val examService: ExamSe
             }
         }
 
-        return exams
+        return exams.stream().sorted { o1, o2 -> o1.course.code.compareTo(o2.course.code)}
+                .collect(Collectors.toSet())
     }
 }

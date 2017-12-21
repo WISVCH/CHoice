@@ -51,7 +51,7 @@ data class CourseDTO(
         /**
          * List of exam of this course
          */
-        var exam: HashSet<Exam>? = null
+        var exam: Set<Exam>? = null
 ) {
-        constructor(course: Course, exams: HashSet<Exam>): this(course.code, course.name, course.predecessor, course.study, course.studyProgram, exams)
+        constructor(course: Course, exams: Set<Exam>): this(course.code, course.name, course.predecessor, course.study, course.studyProgram, exams)
 }
