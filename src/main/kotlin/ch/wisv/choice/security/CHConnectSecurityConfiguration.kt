@@ -45,6 +45,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter
+import org.springframework.security.web.header.writers.StaticHeadersWriter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
@@ -70,10 +71,12 @@ class CHConnectSecurityConfiguration(private val properties: CHConnectConfigurat
                 .and()
                     .authorizeRequests()
                     .antMatchers("/dashboard/**").hasRole("ADMIN")
+                    .antMatchers("/api/**").hasRole("USER")
                     .anyRequest().permitAll()
                 .and()
                     .logout()
                     .logoutSuccessUrl("/")
+                .and().csrf().disable()
         // @formatter:on
     }
 
@@ -186,5 +189,4 @@ class CHConnectSecurityConfiguration(private val properties: CHConnectConfigurat
 
         return source
     }
-
 }
