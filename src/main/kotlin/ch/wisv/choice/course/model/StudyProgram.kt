@@ -22,5 +22,7 @@ enum class StudyProgram {
     FIRST_YEAR,
     SECOND_YEAR,
     THIRD_YEAR,
-    MASTER
+    MASTER,
+    MINOR
+
 }
