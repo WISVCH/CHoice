@@ -34,6 +34,6 @@ security.basic.enabled: false
 
 wisvch:
   connect:
-    issuerUri: https://connect.ch.tudelft.nl/
+    issuerUri: https://connect.ch.tudelft.nl
     clientUri: http://localhost:8080/choice2
     admin-groups: <ldap-group>
