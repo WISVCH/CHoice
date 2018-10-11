@@ -29,7 +29,7 @@ class DashboardController {
     /**
      * Dashboard index
      */
-    @GetMapping("/")
+    @GetMapping
     fun index(model: Model): String {
         return "dashboard/index"
     }
