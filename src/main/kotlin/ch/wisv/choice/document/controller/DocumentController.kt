@@ -66,9 +66,11 @@ class DocumentController(val documentService: DocumentService, val examService: 
     fun getDocumentByExamId(@PathVariable examId: Long, response: HttpServletResponse): ByteArray {
         return try {
             val exam = examService.getExamById(examId)
-            val filename = exam.course.name.replace(' ', '_') + "_" + exam.date.toString() + ".pdf"
+            val examDate = exam.date.toString()
+            val examName = exam.course.name.replace(' ', '_')
+            val filename = "$examName[$examDate].pdf"
             response.contentType = "application/pdf"
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\""
+            response.setHeader("Content-Disposition", "attachment; filename=\"$filename\""
             )
             documentService.getDocumentBytesByExamId(examId)
         } catch (e: CHoiceException) {
