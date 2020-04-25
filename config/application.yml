@@ -3,9 +3,9 @@ spring:
   data.jpa.repositories.enabled: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/choice
-    username: choice
-    password: choice
+    url: jdbc:postgresql://localhost:5432/<database>
+    username: <username>
+    password: <password>
   jpa:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -36,4 +36,4 @@ wisvch:
   connect:
     issuerUri: https://connect.ch.tudelft.nl
     clientUri: http://localhost:8080/choice2
-    admin-groups: hoothub
+    admin-groups: <ldap-group>
