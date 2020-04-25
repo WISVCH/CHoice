@@ -18,6 +18,7 @@
 package ch.wisv.choice.document.controller
 
 import ch.wisv.choice.document.service.DocumentService
+import ch.wisv.choice.exam.service.ExamService
 import ch.wisv.choice.util.CHoiceException
 import ch.wisv.choice.util.ResponseEntityBuilder.Companion.createResponseEntity
 import org.springframework.http.HttpStatus
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/api/v1/document")
-class DocumentController(val documentService: DocumentService) {
+class DocumentController(val documentService: DocumentService, val examService: ExamService) {
 
     /**
      * Get list of Document metadata
@@ -36,8 +37,7 @@ class DocumentController(val documentService: DocumentService) {
      * @return Collection<Document>
      */
     @GetMapping
-    fun getDocumentsMetadata(): ResponseEntity<*>
-            = createResponseEntity(HttpStatus.OK, "List of all the document metadata", documentService.getDocumentsMetadata())
+    fun getDocumentsMetadata(): ResponseEntity<*> = createResponseEntity(HttpStatus.OK, "List of all the document metadata", documentService.getDocumentsMetadata())
 
     /**
      * Show document ByteArray as application/pdf
@@ -64,6 +64,11 @@ class DocumentController(val documentService: DocumentService) {
     @GetMapping("/exam/{examId}", produces = arrayOf(MediaType.APPLICATION_PDF_VALUE))
     fun getDocumentByExamId(@PathVariable examId: Long, response: HttpServletResponse): ByteArray {
         return try {
+            val exam = examService.getExamById(examId)
+            val filename = exam.course.name.replace(' ', '_') + "_" + exam.date.toString() + ".pdf"
+            response.contentType = "application/pdf"
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\""
+            )
             documentService.getDocumentBytesByExamId(examId)
         } catch (e: CHoiceException) {
             response.status = org.apache.http.HttpStatus.SC_NOT_FOUND
