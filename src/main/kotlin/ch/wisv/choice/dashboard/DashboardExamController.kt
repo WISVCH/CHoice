@@ -70,10 +70,8 @@ class DashboardExamController(val examService: ExamService,
                @RequestParam("file") file: MultipartFile): String {
         return try {
             if (modelErrors.hasErrors())
-                throw CHoiceException("Invalid input" +
-                                      if (modelErrors.hasFieldErrors()) " for " + modelErrors.fieldError.field
-                                      else "")
-            
+                throw CHoiceException(generateErrorMessage(modelErrors))
+
             examService.createExam(model)
             documentService.storeDocument(file, DocumentDTO(model.course.code + " " + model.name + " " + model.date, model))
 
@@ -84,6 +82,16 @@ class DashboardExamController(val examService: ExamService,
 
             "redirect:/dashboard/exams/create/"
         }
+    }
+
+    fun generateErrorMessage(modelErrors: Errors): String {
+        if (modelErrors.hasFieldErrors()) {
+            val errorInputId = "Invalid input for " + modelErrors.fieldError.field
+            if (modelErrors.fieldError.field.equals("course"))
+                return errorInputId + ". Does the course you entered exist? If not create it first"
+            return errorInputId
+        }
+        return ""
     }
 
     /**
