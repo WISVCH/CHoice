@@ -4,7 +4,7 @@
 
 Prerequisites:
 
-- JDK 1.8 or newer
+- JDK 1.8
 - PostgreSQL
 
 Setup:
