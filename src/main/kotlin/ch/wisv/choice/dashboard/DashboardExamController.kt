@@ -75,7 +75,6 @@ class DashboardExamController(val examService: ExamService,
                @RequestParam("file") file: MultipartFile): String {
         return try {
             if (modelErrors.hasErrors()) {
-                print(modelErrors.fieldError.toString())
                 throw CHoiceException(generateErrorMessage(modelErrors))
             }
 
