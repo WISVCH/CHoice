@@ -1,4 +1,4 @@
-FROM quay.io/wisvch/openjdk:8-jdk AS builder
+FROM quay.io/wisvch/openjdk:11-jdk AS builder
 COPY . /src
 WORKDIR /src
 RUN ./gradlew build
