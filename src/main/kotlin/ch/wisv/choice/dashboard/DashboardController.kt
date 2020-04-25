@@ -23,14 +23,22 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
-@RequestMapping("/dashboard")
+@RequestMapping
 class DashboardController {
 
     /**
      * Dashboard index
      */
-    @GetMapping
+    @GetMapping("/dashboard/")
     fun index(model: Model): String {
         return "dashboard/index"
+    }
+
+    /**
+     * Dashboard index redirect
+     */
+    @GetMapping("/dashboard")
+    fun redirectToIndex(model: Model): String{
+        return "redirect:dashboard/"
     }
 }
