@@ -25,6 +25,7 @@ import ch.wisv.choice.exam.service.ExamService
 import ch.wisv.choice.util.CHoiceException
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.Errors
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
@@ -63,8 +64,14 @@ class DashboardExamController(val examService: ExamService,
      * POST exam create.
      */
     @PostMapping("/create/")
-    fun create(redirect: RedirectAttributes, @ModelAttribute model: Exam, @RequestParam("file") file: MultipartFile): String {
+    fun create(redirect: RedirectAttributes,
+               @ModelAttribute model: Exam,
+               modelErrors: Errors,
+               @RequestParam("file") file: MultipartFile): String {
         return try {
+            if (modelErrors.hasErrors())
+                throw CHoiceException(generateErrorMessage(modelErrors))
+
             examService.createExam(model)
             documentService.storeDocument(file, DocumentDTO(model.course.code + " " + model.name + " " + model.date, model))
 
@@ -75,6 +82,16 @@ class DashboardExamController(val examService: ExamService,
 
             "redirect:/dashboard/exams/create/"
         }
+    }
+
+    fun generateErrorMessage(modelErrors: Errors): String {
+        if (modelErrors.hasFieldErrors()) {
+            val errorInputId = "Invalid input for " + modelErrors.fieldError.field
+            if (modelErrors.fieldError.field.equals("course"))
+                return errorInputId + ". Does the course you entered exist? If not create it first"
+            return errorInputId
+        }
+        return ""
     }
 
     /**
