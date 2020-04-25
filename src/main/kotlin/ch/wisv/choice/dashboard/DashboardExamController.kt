@@ -23,12 +23,17 @@ import ch.wisv.choice.document.service.DocumentService
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.exam.service.ExamService
 import ch.wisv.choice.util.CHoiceException
+import org.springframework.beans.propertyeditors.CustomDateEditor
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.Errors
+import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+
 
 @Controller
 @RequestMapping("/dashboard/exams")
@@ -69,8 +74,9 @@ class DashboardExamController(val examService: ExamService,
                modelErrors: Errors,
                @RequestParam("file") file: MultipartFile): String {
         return try {
-            if (modelErrors.hasErrors())
+            if (modelErrors.hasErrors()) {
                 throw CHoiceException(generateErrorMessage(modelErrors))
+            }
 
             examService.createExam(model)
             documentService.storeDocument(file, DocumentDTO(model.course.code + " " + model.name + " " + model.date, model))
@@ -83,6 +89,16 @@ class DashboardExamController(val examService: ExamService,
             "redirect:/dashboard/exams/create/"
         }
     }
+
+//    @InitBinder
+//    fun dateBinder(binder: WebDataBinder) {
+//        //The date format to parse or output your dates
+//        val dateFormat = SimpleDateFormat("MM/dd/yyyy")
+//        //Create a new CustomDateEditor
+//        val editor = CustomDateEditor(dateFormat, true)
+//        //Register it as custom editor for the Date type
+//        binder.registerCustomEditor(LocalDate::class.java, editor)
+//    }
 
     fun generateErrorMessage(modelErrors: Errors): String {
         if (modelErrors.hasFieldErrors()) {
