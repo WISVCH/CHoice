@@ -38,7 +38,7 @@ class ExamServiceImpl(val examRepository: ExamRepository, val courseService: Cou
     }
 
     override fun getExamById(id: Long): Exam
-        = examRepository.findOne(id) ?: throw CHoiceException("Exam with id $id not found")
+        = examRepository.findById(id).orElse(null) ?: throw CHoiceException("Exam with id $id not found")
 
     override fun deleteExam(exam: Exam)
             = examRepository.delete(exam)

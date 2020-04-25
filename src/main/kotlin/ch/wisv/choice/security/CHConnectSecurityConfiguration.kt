@@ -54,7 +54,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+//@Order(2147483640) // This value used to be defined as SecurityProperties.ACCESS_OVERRIDE_ORDER but has been removed as export
 @Profile("!test")
 class CHConnectSecurityConfiguration(private val properties: CHConnectConfiguration, private val clientConfigurationService: ClientConfigurationService) : WebSecurityConfigurerAdapter() {
 
@@ -104,7 +104,7 @@ class CHConnectSecurityConfiguration(private val properties: CHConnectConfigurat
     @Bean
     fun mvcInterceptor(): WebMvcConfigurerAdapter {
         return object : WebMvcConfigurerAdapter() {
-            override fun addInterceptors(registry: InterceptorRegistry?) {
+            override fun addInterceptors(registry: InterceptorRegistry) {
                 registry!!.addInterceptor(UserInfoInterceptor())
             }
         }

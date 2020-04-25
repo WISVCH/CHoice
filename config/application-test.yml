@@ -15,4 +15,4 @@ spring:
     properties.hibernate.default_schema: PUBLIC
 
 server:
-  context-path: /
+  servlet.contextPath: /

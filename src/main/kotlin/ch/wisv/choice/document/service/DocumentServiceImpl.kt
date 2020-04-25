@@ -36,9 +36,8 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
     }
 
     override fun storeDocument(document: Document): Document {
-        if (document.file != null) {
-            fileRepository.saveAndFlush(document.file)
-        }
+        if(document.file != null)
+            fileRepository.saveAndFlush(document.file!!)
 
         return documentRepository.saveAndFlush(document)
     }
@@ -51,7 +50,7 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
     }
 
     override fun getDocumentBytesById(id: Long): ByteArray {
-        val document = documentRepository.findOne(id) ?: throw CHoiceException("Document with id $id does not exists!")
+        val document = documentRepository.findById(id).orElse(null) ?: throw CHoiceException("Document with id $id does not exists!")
         document.file ?: throw CHoiceException("No file added to this document!")
 
         return document.file!!.bytes
@@ -72,9 +71,8 @@ class DocumentServiceImpl(val documentRepository: DocumentRepository,
 
     override fun deleteDocumentByExamId(id: Long) {
         val document = getDocumentByExamId(id)
-        if (document.file != null) {
-            fileRepository.delete(document.file)
-        }
+        if(document.file != null)
+            fileRepository.delete(document.file!!)
 
         documentRepository.delete(document)
     }

@@ -10,7 +10,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: update
     show-sql: false
     properties.hibernate.default_schema: PUBLIC
 
@@ -28,7 +28,7 @@ spring:
 
 server:
   port: 8080
-  context-path: /choice2
+  servlet.contextPath: /choice2
 
 security.basic.enabled: false
 
