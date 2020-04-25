@@ -96,7 +96,7 @@ dependencies {
     compile 'org.webjars:font-awesome:4.7.0'
     compile 'org.webjars.npm:flatpickr:4.5.1'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test:2.2.6.RELEASE'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile "io.rest-assured:rest-assured:3.3.0"
 
     runtime 'org.postgresql:postgresql:42.2.12'
