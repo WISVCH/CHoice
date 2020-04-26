@@ -18,7 +18,6 @@
 package ch.wisv.choice.exam.model
 
 import ch.wisv.choice.course.model.Course
-import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -34,6 +33,7 @@ data class Exam(
         @JoinColumn(name = "course")
         var course: Course = Course(),
 
+        @Convert(converter= DateToTimeSerializedConverter::class)
         @JoinColumn(name = "date")
         var date: LocalDate = LocalDate.now(),
 
