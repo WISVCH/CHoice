@@ -80,16 +80,16 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-configuration-processor'
-    compile 'org.springframework.boot:spring-boot-starter-oauth2-client:'
+    compile 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
     compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
 
-    compile 'org.apache.httpcomponents:httpclient:4.5.12'
+    compile 'org.apache.httpcomponents:httpclient'
 
-    compile 'org.thymeleaf:thymeleaf-spring5:3.0.11.RELEASE'
-    compile 'org.thymeleaf:thymeleaf:3.0.11.RELEASE'
-    compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
+    compile 'org.thymeleaf:thymeleaf-spring5'
+    compile 'org.thymeleaf:thymeleaf'
+    compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
     compile 'org.webjars:bootstrap:3.3.7-1'
     compile 'org.webjars.bower:wisvch-bootstrap-theme:0.0.3'
@@ -97,10 +97,10 @@ dependencies {
     compile 'org.webjars.npm:flatpickr:4.5.1'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile "io.rest-assured:rest-assured:3.3.0"
+    testCompile "io.rest-assured:rest-assured"
 
-    runtime 'org.postgresql:postgresql:42.2.12'
-    runtime "org.hsqldb:hsqldb:2.5.0"
+    runtime 'org.postgresql:postgresql'
+    runtime "org.hsqldb:hsqldb"
 }
 
 buildScan {
