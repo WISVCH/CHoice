@@ -30,7 +30,7 @@ class CHConnectSecurityConfiguration : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
         http
                 ?.authorizeRequests()
-                ?.antMatchers("/admin/**")?.hasRole("ADMIN")
+                ?.antMatchers("/dashboard/**")?.hasRole("ADMIN")
                 ?.anyRequest()?.permitAll()
                 ?.and()
                 ?.oauth2Login()?.userInfoEndpoint()?.oidcUserService(oidcUserService())
