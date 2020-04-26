@@ -1,0 +1,26 @@
+spring:
+  jpa:
+    hibernate.ddl-auto: validate
+
+  servlet:
+    multipart:
+      max-file-size: 64MB
+      max-request-size: 64MB
+
+  security:
+    oauth2:
+      client:
+        provider:
+          wisvchconnect:
+            issuer-uri: https://connect.ch.tudelft.nl
+        registration:
+          wisvchconnect:
+            scope:
+              - openid
+              - profile
+              - email
+              - ldap
+
+server:
+  port: 8080
+  servlet.contextPath: /choice2/
