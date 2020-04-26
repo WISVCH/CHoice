@@ -1,8 +1,8 @@
-FROM quay.io/wisvch/openjdk:11-jdk AS builder
+FROM adoptopenjdk:11-hotspot AS builder
 COPY . /src
 WORKDIR /src
 RUN ./gradlew build
 
-FROM quay.io/wisvch/spring-boot-base:2.1
+FROM wisvch/spring-boot-base:2.2
 COPY --from=builder /src/build/libs/choice.jar /srv/choice.jar
 CMD ["/srv/choice.jar"]
