@@ -61,7 +61,6 @@ class ApplicationTest {
             val document = Document(null, null, "Tentamen", exam1)
             documentService.storeDocument(document)
 
-            val file2 = java.io.File("src/test/resources/TI1300 - Antwoorden.pdf")
             val document2 = Document(null, null, "Antwoorden", exam1)
             documentService.storeDocument(document2)
         }

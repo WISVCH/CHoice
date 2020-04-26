@@ -54,7 +54,7 @@ class CourseServiceImpl(val courseRepository: CourseRepository, val examReposito
      * @return Course?
      */
     override fun getCourseByCourseCode(courseCode: String): Course
-            = courseRepository.findOne(courseCode) ?: throw CHoiceException("Course with courseCode $courseCode not found")
+            = courseRepository.findById(courseCode).orElse(null) ?: throw CHoiceException("Course with courseCode $courseCode not found")
 
     /**
      * Get the Course predecessor by Course Code.
@@ -66,7 +66,7 @@ class CourseServiceImpl(val courseRepository: CourseRepository, val examReposito
     override fun getCoursePredecessorByCourseCode(courseCode: String): Course? {
         val (_, _, predecessor) = getCourseByCourseCode(courseCode)
 
-        return if (predecessor == null) null else courseRepository.findOne(predecessor)
+        return if (predecessor == null) null else courseRepository.findById(predecessor).get()
     }
 
     /**

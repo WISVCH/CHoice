@@ -90,20 +90,10 @@ class DashboardExamController(val examService: ExamService,
         }
     }
 
-//    @InitBinder
-//    fun dateBinder(binder: WebDataBinder) {
-//        //The date format to parse or output your dates
-//        val dateFormat = SimpleDateFormat("MM/dd/yyyy")
-//        //Create a new CustomDateEditor
-//        val editor = CustomDateEditor(dateFormat, true)
-//        //Register it as custom editor for the Date type
-//        binder.registerCustomEditor(LocalDate::class.java, editor)
-//    }
-
     fun generateErrorMessage(modelErrors: Errors): String {
         if (modelErrors.hasFieldErrors()) {
-            val errorInputId = "Invalid input for " + modelErrors.fieldError.field
-            if (modelErrors.fieldError.field.equals("course"))
+            val errorInputId = "Invalid input for " + modelErrors.fieldError?.field
+            if (modelErrors.fieldError?.field.equals("course"))
                 return errorInputId + ". Does the course you entered exist? If not create it first"
             return errorInputId
         }

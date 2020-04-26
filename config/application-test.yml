@@ -13,6 +13,21 @@ spring:
     hibernate.ddl-auto: create
     show-sql: false
     properties.hibernate.default_schema: PUBLIC
+  security:
+    oauth2:
+      client:
+        provider:
+          wisvchconnect:
+            issuer-uri: https://connect.ch.tudelft.nl
+        registration:
+          wisvchconnect:
+            client-id: localhost-spring-dev
+            client-secret: Hvw51WUpYdSRhJ6hrxNSNQyXK0jv3M6-dRxVhfUhEuVz9PvH8hVMz51SeGajsIVT_C5l0KyzjrnfvNyGzbiW3A
+            scope:
+              - openid
+              - profile
+              - email
+              - ldap
 
 server:
-  context-path: /
+  servlet.contextPath: /
