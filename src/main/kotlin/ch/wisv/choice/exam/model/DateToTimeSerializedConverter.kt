@@ -10,21 +10,23 @@ import javax.persistence.Converter
 
 
 @Converter
-class DateToTimeSerializedConverter : AttributeConverter<LocalDate, String> {
-    override fun convertToDatabaseColumn(date : LocalDate): String {
+class DateToTimeSerializedConverter : AttributeConverter<LocalDate, ByteArray> {
+    override fun convertToDatabaseColumn(date : LocalDate): ByteArray {
         val bos = ByteArrayOutputStream()
         val os = ObjectOutputStream(bos)
         os.writeObject(date)
-        val ans: String = bos.toString()
+        val ans: ByteArray = bos.toByteArray()
         os.close()
+        bos.close()
         return ans;
     }
 
-    override fun convertToEntityAttribute(serDate: String):LocalDate {
-        val bis = ByteArrayInputStream(serDate.toByteArray())
+    override fun convertToEntityAttribute(serDate: ByteArray):LocalDate {
+        val bis = ByteArrayInputStream(serDate)
         val oInputStream = ObjectInputStream(bis)
         val ans: LocalDate = oInputStream.readObject() as LocalDate
         oInputStream.close()
+        bis.close()
         return ans
     }
 }
