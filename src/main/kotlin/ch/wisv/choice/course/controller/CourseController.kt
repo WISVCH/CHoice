@@ -80,13 +80,13 @@ class CourseController(val courseService: CourseService, val examService: ExamSe
             if (request.getParameter("study") != null && request.getParameter("study") != "") {
                 val studyEnum = Study.valueOf(request.getParameter("study"))
 
-                courses = courses.filter { item -> item.study!! == studyEnum }
+                courses = courses.filter { item -> item.study == studyEnum }
             }
 
             if (request.getParameter("program") != null && request.getParameter("program") != "") {
                 val studyProgramEnum = StudyProgram.valueOf(request.getParameter("program"))
 
-                courses = courses.filter { item -> item.studyProgram!! == studyProgramEnum }
+                courses = courses.filter { item -> item.studyProgram == studyProgramEnum }
             }
         } catch (e: IllegalArgumentException) {
             return createResponseEntity(HttpStatus.BAD_REQUEST, "Invalid study or program input.")
