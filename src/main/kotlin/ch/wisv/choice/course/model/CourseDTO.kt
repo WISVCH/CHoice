@@ -51,7 +51,7 @@ data class CourseDTO(
         /**
          * List of exam of this course
          */
-        var exam: Set<Exam>? = null
+        var exam: List<Exam>? = null
 ) {
-        constructor(course: Course, exams: Set<Exam>): this(course.code, course.name, course.predecessor, course.study, course.studyProgram, exams)
+        constructor(course: Course, exams: Set<Exam>): this(course.code, course.name, course.predecessor, course.study, course.studyProgram, exams.toList())
 }

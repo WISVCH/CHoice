@@ -105,6 +105,8 @@ class CourseController(val courseService: CourseService, val examService: ExamSe
         val coursesDTO = courses.stream().map { course -> CourseDTO(course, getPredecessorsExams(course)) }
                 .collect(Collectors.toList())
 
+        coursesDTO.forEachIndexed { index, courseDTO -> coursesDTO[index].exam = courseDTO.exam?.sortedByDescending{it.date} }
+
         return createResponseEntity(HttpStatus.OK, "List of all courses that match the search query", coursesDTO)
     }
 
