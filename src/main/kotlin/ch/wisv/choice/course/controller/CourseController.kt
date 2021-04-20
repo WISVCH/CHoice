@@ -80,13 +80,13 @@ class CourseController(val courseService: CourseService, val examService: ExamSe
             if (request.getParameter("study") != null && request.getParameter("study") != "") {
                 val studyEnum = Study.valueOf(request.getParameter("study"))
 
-                courses = courses.filter { item -> item.study!! == studyEnum }
+                courses = courses.filter { item -> item.study == studyEnum }
             }
 
             if (request.getParameter("program") != null && request.getParameter("program") != "") {
                 val studyProgramEnum = StudyProgram.valueOf(request.getParameter("program"))
 
-                courses = courses.filter { item -> item.studyProgram!! == studyProgramEnum }
+                courses = courses.filter { item -> item.studyProgram == studyProgramEnum }
             }
         } catch (e: IllegalArgumentException) {
             return createResponseEntity(HttpStatus.BAD_REQUEST, "Invalid study or program input.")
@@ -104,6 +104,8 @@ class CourseController(val courseService: CourseService, val examService: ExamSe
 
         val coursesDTO = courses.stream().map { course -> CourseDTO(course, getPredecessorsExams(course)) }
                 .collect(Collectors.toList())
+
+        coursesDTO.forEachIndexed { index, courseDTO -> coursesDTO[index].exam = courseDTO.exam?.sortedByDescending{it.date} }
 
         return createResponseEntity(HttpStatus.OK, "List of all courses that match the search query", coursesDTO)
     }
