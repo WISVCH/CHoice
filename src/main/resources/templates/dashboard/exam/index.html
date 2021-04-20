@@ -73,7 +73,6 @@
                     <th>Course</th>
                     <th>Exam</th>
                     <th class="text-center">Answers</th>
-                    <th class="text-center">Document</th>
                     <th class="text-center">Actions</th>
                 </tr>
                 </thead>
@@ -86,12 +85,13 @@
                            th:classappend="${exam.includingAnswers ? 'fa-check text-success' : 'fa-ban text-danger'}"></i>
                     </td>
                     <td>
-                        <a target="_blank" class="btn btn-info" th:href="@{'/api/v1/document/exam/' + ${exam.getId()}}">
-                            <i class="fa fa-file-o"></i>
-                        </a>
-                    </td>
-                    <td>
                         <div class="btn-group" role="group" aria-label="...">
+                            <a th:href="'edit/' + ${exam.getId()} + '/'" class="btn btn-warning">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </a>
+                            <a target="_blank" class="btn btn-info" th:href="@{'/api/v1/document/exam/' + ${exam.getId()}}">
+                                <i class="fa fa-file-o"></i>
+                            </a>
                             <a th:href="'delete/' + ${exam.getId()} + '/'" class="btn btn-danger">
                                 <i class="glyphicon glyphicon-remove"></i>
                             </a>
@@ -116,8 +116,12 @@
             pageLength: 100,
             columnDefs: [
                 {
-                    targets: [2, 3, 4],
+                    targets: [2],
                     width: "50px"
+                },
+                {
+                    targets: [3],
+                    width: "120px"
                 },
                 {
                     targets: [0],
@@ -132,7 +136,7 @@
                 api.column(0, {page: 'current'}).data().each(function (group, i) {
                     if (last !== group) {
                         $(rows).eq(i).before(
-                            '<tr class="group active"><td colspan="4">' + group + '</td></tr>'
+                            '<tr class="group active"><td colspan="3">' + group + '</td></tr>'
                         );
                         last = group;
                     }

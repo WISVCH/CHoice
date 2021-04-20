@@ -17,6 +17,7 @@
 
 package ch.wisv.choice.dashboard
 
+import ch.wisv.choice.course.model.Course
 import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.document.model.DocumentDTO
 import ch.wisv.choice.document.service.DocumentService
@@ -98,6 +99,43 @@ class DashboardExamController(val examService: ExamService,
             return errorInputId
         }
         return ""
+    }
+
+    /**
+     * Dashboard course create.
+     */
+    @GetMapping("/edit/{examId}/")
+    fun edit(model: Model, redirect: RedirectAttributes, @PathVariable examId: String): String {
+        return try {
+            if (!model.containsAttribute("examId")) {
+                model.addAttribute("exam", examService.getExamById(examId.toLong()))
+            }
+
+            model.addAttribute("courses", courseService.getAllCourses())
+
+            "dashboard/exam/update"
+        } catch (e: CHoiceException) {
+            redirect.addFlashAttribute("error", e.message!!)
+
+            "redirect:/exams/"
+        }
+    }
+
+    /**
+     * POST course create.
+     */
+    @PostMapping("/edit/{examId}/")
+    fun edit(redirect: RedirectAttributes, @PathVariable("examId") examId: String, @ModelAttribute model: Exam): String {
+        return try {
+            examService.updateExam(examId.toLong(), model)
+
+            "redirect:/dashboard/exams/"
+        } catch (e: CHoiceException) {
+            redirect.addFlashAttribute("error", e.message)
+            redirect.addFlashAttribute("course", model)
+
+            "redirect:/dashboard/exams/create/"
+        }
     }
 
     /**
