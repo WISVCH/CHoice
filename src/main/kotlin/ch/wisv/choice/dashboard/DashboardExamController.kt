@@ -102,12 +102,12 @@ class DashboardExamController(val examService: ExamService,
     }
 
     /**
-     * Dashboard course create.
+     * Dashboard exam create.
      */
     @GetMapping("/edit/{examId}/")
     fun edit(model: Model, redirect: RedirectAttributes, @PathVariable examId: String): String {
         return try {
-            if (!model.containsAttribute("examId")) {
+            if (!model.containsAttribute("exam")) {
                 model.addAttribute("exam", examService.getExamById(examId.toLong()))
             }
 
@@ -122,7 +122,7 @@ class DashboardExamController(val examService: ExamService,
     }
 
     /**
-     * POST course create.
+     * POST exam edit.
      */
     @PostMapping("/edit/{examId}/")
     fun edit(redirect: RedirectAttributes, @PathVariable("examId") examId: String, @ModelAttribute model: Exam): String {
@@ -132,7 +132,7 @@ class DashboardExamController(val examService: ExamService,
             "redirect:/dashboard/exams/"
         } catch (e: CHoiceException) {
             redirect.addFlashAttribute("error", e.message)
-            redirect.addFlashAttribute("course", model)
+            redirect.addFlashAttribute("exam", model)
 
             "redirect:/dashboard/exams/create/"
         }
