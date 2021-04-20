@@ -17,23 +17,18 @@
 
 package ch.wisv.choice.dashboard
 
-import ch.wisv.choice.course.model.Course
 import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.document.model.DocumentDTO
 import ch.wisv.choice.document.service.DocumentService
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.exam.service.ExamService
 import ch.wisv.choice.util.CHoiceException
-import org.springframework.beans.propertyeditors.CustomDateEditor
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.Errors
-import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 
 
 @Controller

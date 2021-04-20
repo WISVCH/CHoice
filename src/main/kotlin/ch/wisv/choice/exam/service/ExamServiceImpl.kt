@@ -17,7 +17,6 @@
 
 package ch.wisv.choice.exam.service
 
-import ch.wisv.choice.course.model.Course
 import ch.wisv.choice.course.service.CourseService
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.util.CHoiceException
