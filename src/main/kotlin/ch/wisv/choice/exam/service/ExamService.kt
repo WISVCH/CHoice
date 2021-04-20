@@ -32,4 +32,6 @@ interface ExamService {
     fun deleteExam(exam: Exam)
 
     fun deleteExamsByCourse(code: String)
+
+    fun updateExam(examId: Long, exam: Exam)
 }
