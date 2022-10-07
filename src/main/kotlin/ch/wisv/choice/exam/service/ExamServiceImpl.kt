@@ -48,4 +48,20 @@ class ExamServiceImpl(val examRepository: ExamRepository, val courseService: Cou
 
         examRepository.deleteAllByCourse(course)
     }
+
+    /**
+     * Update an Exam.
+     *
+     * @param exam: Exam
+     */
+    override fun updateExam(examId: Long, exam: Exam) {
+        val tempExam = getExamById(examId)
+
+        tempExam.course = exam.course
+        tempExam.date = exam.date
+        tempExam.includingAnswers = exam.includingAnswers
+        tempExam.name = exam.name
+
+        examRepository.saveAndFlush(tempExam)
+    }
 }

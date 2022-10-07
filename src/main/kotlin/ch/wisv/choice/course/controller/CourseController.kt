@@ -97,7 +97,7 @@ class CourseController(val courseService: CourseService, val examService: ExamSe
 
             courses = courses.filter { (code, name) ->
                 searchParts.parallelStream().anyMatch { item ->
-                    code.toLowerCase().contains(item.toLowerCase()) || name.toLowerCase().contains(item.toLowerCase())
+                    code.lowercase().contains(item.lowercase()) || name.lowercase().contains(item.lowercase())
                 }
             }
         }

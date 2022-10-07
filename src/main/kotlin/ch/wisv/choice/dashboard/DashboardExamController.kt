@@ -23,16 +23,12 @@ import ch.wisv.choice.document.service.DocumentService
 import ch.wisv.choice.exam.model.Exam
 import ch.wisv.choice.exam.service.ExamService
 import ch.wisv.choice.util.CHoiceException
-import org.springframework.beans.propertyeditors.CustomDateEditor
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.Errors
-import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 
 
 @Controller
@@ -102,6 +98,43 @@ class DashboardExamController(val examService: ExamService,
             return errorInputId
         }
         return ""
+    }
+
+    /**
+     * Dashboard exam create.
+     */
+    @GetMapping("/edit/{examId}/")
+    fun edit(model: Model, redirect: RedirectAttributes, @PathVariable examId: String): String {
+        return try {
+            if (!model.containsAttribute("exam")) {
+                model.addAttribute("exam", examService.getExamById(examId.toLong()))
+            }
+
+            model.addAttribute("courses", courseService.getAllCourses())
+
+            "dashboard/exam/update"
+        } catch (e: CHoiceException) {
+            redirect.addFlashAttribute("error", e.message!!)
+
+            "redirect:/exams/"
+        }
+    }
+
+    /**
+     * POST exam edit.
+     */
+    @PostMapping("/edit/{examId}/")
+    fun edit(redirect: RedirectAttributes, @PathVariable("examId") examId: String, @ModelAttribute model: Exam): String {
+        return try {
+            examService.updateExam(examId.toLong(), model)
+
+            "redirect:/dashboard/exams/"
+        } catch (e: CHoiceException) {
+            redirect.addFlashAttribute("error", e.message)
+            redirect.addFlashAttribute("exam", model)
+
+            "redirect:/dashboard/exams/create/"
+        }
     }
 
     /**
