@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
+import java.time.LocalDate
+
 
 @Controller
 @RequestMapping("/dashboard/exams")
@@ -124,7 +126,10 @@ class DashboardExamController(val examService: ExamService,
      * POST exam edit.
      */
     @PostMapping("/edit/{examId}/")
-    fun edit(redirect: RedirectAttributes, @PathVariable("examId") examId: String, @ModelAttribute model: Exam): String {
+    fun edit(redirect: RedirectAttributes, @PathVariable("examId") examId: String, @ModelAttribute model: Exam,
+             @RequestParam("stringDate") stringDate: String): String {
+        model.date = LocalDate.parse(stringDate)
+
         return try {
             examService.updateExam(examId.toLong(), model)
 

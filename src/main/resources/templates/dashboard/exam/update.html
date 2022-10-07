@@ -96,7 +96,7 @@
 
                         <div class="form-group">
                             <label class="control-label">Date</label>
-                            <input th:field="*{date}" type="text" class="form-control" required
+                            <input id="date" type="date" th:value="${exam.getDate()}" name="stringDate" class="form-control" required
                                    placeholder="Click to select a date..." title="date">
                         </div>
 
@@ -128,7 +128,7 @@
         enableTime: false,
         altInput: true,
         altFormat: 'F j, Y',
-        dateFormat: 'm/d/y',
+        dateFormat: "Y-m-d"
     });
 </script>
 </body>
