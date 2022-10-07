@@ -72,7 +72,11 @@ class DashboardExamController(val examService: ExamService,
     fun create(redirect: RedirectAttributes,
                @ModelAttribute model: Exam,
                modelErrors: Errors,
-               @RequestParam("file") file: MultipartFile): String {
+               @RequestParam("file") file: MultipartFile,
+               @RequestParam("stringDate") stringDate: String): String {
+
+        model.date = LocalDate.parse(stringDate)
+
         return try {
             if (modelErrors.hasErrors()) {
                 throw CHoiceException(generateErrorMessage(modelErrors))
