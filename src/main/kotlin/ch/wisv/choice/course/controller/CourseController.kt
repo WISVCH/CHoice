@@ -36,6 +36,7 @@ import java.util.stream.Collectors
 import javax.servlet.http.HttpServletRequest
 
 @RestController
+@CrossOrigin(origins = "https://ch.tudelft.nl")
 @RequestMapping("/api/v1/course")
 class CourseController(val courseService: CourseService, val examService: ExamService) {
 
