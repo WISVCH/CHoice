@@ -41,7 +41,7 @@ class CHConnectSecurityConfiguration : WebSecurityConfigurerAdapter() {
             val ROLE_ADMIN = SimpleGrantedAuthority("ROLE_ADMIN")
             val ROLE_USER = SimpleGrantedAuthority("ROLE_USER")
             val idToken: OidcIdToken = userRequest!!.getIdToken()
-            val groups = idToken.claims["ldap_groups"] as MutableCollection<String>
+            val groups = idToken.claims["google_groups"] as MutableCollection<String>
             val authorities: MutableList<SimpleGrantedAuthority?> = if (groups.stream().anyMatch { o: String? -> adminGroups!!.contains(o) }) mutableListOf(ROLE_ADMIN, ROLE_USER) else mutableListOf(ROLE_USER)
             DefaultOidcUser(authorities, idToken)
         }
