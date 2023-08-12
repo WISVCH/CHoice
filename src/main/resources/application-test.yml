@@ -27,7 +27,7 @@ spring:
               - openid
               - profile
               - email
-              - ldap
+              - auth
 
 server:
   port: 8080
