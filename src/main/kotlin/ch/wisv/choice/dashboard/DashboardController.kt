@@ -41,4 +41,12 @@ class DashboardController {
     fun redirectToIndex(model: Model): String{
         return "redirect:dashboard/"
     }
+
+    /**
+     * Root redirect
+     */
+    @GetMapping("/")
+    fun redirectToDashboard(model: Model): String{
+        return "redirect:dashboard/"
+    }
 }
